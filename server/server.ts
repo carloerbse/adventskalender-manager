@@ -1,6 +1,12 @@
 // server/server.ts
 import { serve } from "https://deno.land/std@0.224.0/http/server.ts";
 import { initDatabase, closeDatabase } from "./database.ts";
+import {
+  handleRegister,
+  handleLogin,
+  handleLogout,
+  handleSessionCheck,
+} from "./routes/auth.ts";
 
 const PORT = 8000;
 
@@ -14,7 +20,7 @@ globalThis.addEventListener("unload", () => {
   closeDatabase();
 });
 
-serve((req: Request) => {
+serve(async (req: Request) => {
   const url = new URL(req.url);
   
   // Log alle Requests
@@ -43,6 +49,23 @@ serve((req: Request) => {
       status: 204,
       headers: corsHeaders,
     });
+  }
+
+  // Auth-Endpoints
+  if (url.pathname === "/api/auth/register" && req.method === "POST") {
+    return await handleRegister(req, corsHeaders);
+  }
+
+  if (url.pathname === "/api/auth/login" && req.method === "POST") {
+    return await handleLogin(req, corsHeaders);
+  }
+
+  if (url.pathname === "/api/auth/logout" && req.method === "POST") {
+    return handleLogout(req, corsHeaders);
+  }
+
+  if (url.pathname === "/api/auth/session" && req.method === "GET") {
+    return handleSessionCheck(req, corsHeaders);
   }
 
   // Test-Endpoint
