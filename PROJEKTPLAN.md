@@ -37,27 +37,35 @@
 
 ## 2. Projektphasen & Zeitplan
 
-### Phase 1: Grundgerüst & Datenbank (3-4 Tage)
+### Phase 1: Grundgerüst & Datenbank ✅ (ABGESCHLOSSEN)
 **Ziel**: Funktionierende Datenbank mit Grundstruktur
 
 **Backend:**
-- [ ] SQLite-Datenbank in Deno einbinden
-- [ ] Datenbank-Schema erstellen:
+- [x] SQLite-Datenbank in Deno einbinden (v3.9.1)
+- [x] Datenbank-Schema erstellt:
   - `users` (id, username, password_hash, role, created_at)
   - `calendars` (id, user_id, name, description, created_at)
   - `pouches` (id, calendar_id, number, content, notes, is_packed, created_at)
-- [ ] Datenbank-Initialisierung beim Server-Start
-- [ ] Basis-CRUD-Funktionen für Datenbank schreiben
+  - `sessions` (id, user_id, expires_at, created_at)
+- [x] Datenbank-Initialisierung beim Server-Start
+- [x] Basis-CRUD-Funktionen für Datenbank (createPouchesForCalendar, cleanupExpiredSessions)
+- [x] CORS konfiguriert für localhost:5173 und :5174
+- [x] .gitignore aktualisiert (Datenbank wird nicht committed)
 
 **Frontend:**
-- [ ] Projekt aufräumen (Standard-Content entfernen)
-- [ ] Grundlegendes Layout erstellen (Header, Navigation, Footer)
-- [ ] Routing einrichten (Vue Router installieren)
+- [x] Projekt aufgeräumt (HelloWorld.vue entfernt)
+- [x] Grundlegendes Layout erstellt (Header, Main, Footer)
+- [x] Vue Router 4 installiert und konfiguriert
+- [x] Pinia für State Management installiert
+- [x] TypeScript-Typen definiert (User, Calendar, Pouch, Session, etc.)
+- [x] Backend-Verbindungstest in App.vue implementiert
 
 **Deliverables:**
-- Funktionierende Datenbank
-- Server kann Daten lesen/schreiben
-- Basis-Frontend-Struktur
+- ✅ Funktionierende Datenbank (server/adventskalender.db)
+- ✅ Server läuft auf Port 8000 mit DB-Verbindung
+- ✅ Frontend läuft auf Port 5174
+- ✅ Frontend-Backend-Kommunikation funktioniert
+- ✅ Basis-Frontend-Struktur mit Router und Pinia
 
 ---
 

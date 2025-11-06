@@ -1,23 +1,68 @@
 // server/server.ts
 import { serve } from "https://deno.land/std@0.224.0/http/server.ts";
+import { initDatabase, closeDatabase } from "./database.ts";
 
 const PORT = 8000;
 
-console.log(`Deno-Server läuft auf http://localhost:${PORT}`);
+// Datenbank initialisieren beim Server-Start
+const db = initDatabase();
+
+console.log(`🚀 Deno-Server läuft auf http://localhost:${PORT}`);
+
+// Graceful Shutdown: Datenbank schließen bei Server-Stop
+globalThis.addEventListener("unload", () => {
+  closeDatabase();
+});
 
 serve((req: Request) => {
   const url = new URL(req.url);
 
+  // CORS-Headers für Frontend (localhost:5173 oder 5174)
+  const origin = req.headers.get("origin") || "";
+  const allowedOrigins = ["http://localhost:5173", "http://localhost:5174"];
+  const corsOrigin = allowedOrigins.includes(origin) ? origin : "http://localhost:5173";
+  
+  const corsHeaders = {
+    "Access-Control-Allow-Origin": corsOrigin,
+    "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type, Authorization",
+    "Access-Control-Allow-Credentials": "true",
+  };
+
+  // CORS Preflight Request
+  if (req.method === "OPTIONS") {
+    return new Response(null, {
+      status: 204,
+      headers: corsHeaders,
+    });
+  }
+
+  // Test-Endpoint
   if (url.pathname === "/api/hello") {
-    const body = JSON.stringify({ message: "Hallo Adventskalender-Manager! 🎄" });
+    const body = JSON.stringify({ 
+      message: "Hallo Adventskalender-Manager! 🎄",
+      database: "connected",
+      timestamp: new Date().toISOString()
+    });
 
     return new Response(body, {
       status: 200,
       headers: {
         "Content-Type": "application/json",
+        ...corsHeaders,
       },
     });
   }
 
-  return new Response("Not Found", { status: 404 });
+  // 404 für unbekannte Routen
+  return new Response(
+    JSON.stringify({ error: "Not Found" }), 
+    { 
+      status: 404,
+      headers: {
+        "Content-Type": "application/json",
+        ...corsHeaders,
+      }
+    }
+  );
 }, { port: PORT });
