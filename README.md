@@ -30,16 +30,35 @@ Diese Anwendung hilft beim Planen und Verwalten von handgemachten Adventskalende
 - Node.js (v18+)
 - Deno (v1.x)
 
-### Backend starten
+### Einfacher Start (Empfohlen)
+Beide Server in separaten Terminals starten:
+```powershell
+.\start-dev.ps1
+```
+
+Das öffnet 2 neue Terminal-Fenster:
+- 🎄 Backend-Server (Deno) auf Port 8000
+- 🎄 Frontend-Server (Vite) auf Port 5173
+
+### Manueller Start
+
+#### Backend starten (Terminal 1)
 ```powershell
 deno run --allow-net --allow-read --allow-write server/server.ts
 ```
 
-### Frontend starten (separates Terminal)
+#### Frontend starten (Terminal 2 - separates Terminal!)
 ```powershell
 npm install
 npm run dev
 ```
+
+### Server stoppen
+```powershell
+.\stop-dev.ps1
+```
+
+**Wichtig:** Backend und Frontend müssen in **separaten Terminals** laufen!
 
 ## 📁 Projektstruktur
 

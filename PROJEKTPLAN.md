@@ -49,7 +49,7 @@
   - `sessions` (id, user_id, expires_at, created_at)
 - [x] Datenbank-Initialisierung beim Server-Start
 - [x] Basis-CRUD-Funktionen für Datenbank (createPouchesForCalendar, cleanupExpiredSessions)
-- [x] CORS konfiguriert für localhost:5173 und :5174
+- [x] CORS konfiguriert für localhost:5173
 - [x] .gitignore aktualisiert (Datenbank wird nicht committed)
 
 **Frontend:**
@@ -63,7 +63,7 @@
 **Deliverables:**
 - ✅ Funktionierende Datenbank (server/adventskalender.db)
 - ✅ Server läuft auf Port 8000 mit DB-Verbindung
-- ✅ Frontend läuft auf Port 5174
+- ✅ Frontend läuft auf Port 5173
 - ✅ Frontend-Backend-Kommunikation funktioniert
 - ✅ Basis-Frontend-Struktur mit Router und Pinia
 

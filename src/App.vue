@@ -7,13 +7,25 @@ const backendData = ref<any>(null)
 
 onMounted(async () => {
   try {
-    const response = await fetch('http://localhost:8000/api/hello')
+    console.log('🔍 Versuche Backend zu erreichen: http://localhost:8000/api/hello')
+    const response = await fetch('http://localhost:8000/api/hello', {
+      method: 'GET',
+      mode: 'cors',
+      credentials: 'include'
+    })
+    console.log('✅ Response erhalten:', response.status, response.statusText)
+    
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`)
+    }
+    
     const data = await response.json()
+    console.log('📦 Daten:', data)
     backendData.value = data
     backendStatus.value = '✅ Backend verbunden'
   } catch (error) {
-    backendStatus.value = '❌ Backend nicht erreichbar'
-    console.error('Backend-Fehler:', error)
+    backendStatus.value = `❌ Backend nicht erreichbar: ${error instanceof Error ? error.message : 'Unbekannter Fehler'}`
+    console.error('❌ Backend-Fehler:', error)
   }
 })
 </script>

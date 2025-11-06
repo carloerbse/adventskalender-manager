@@ -16,11 +16,19 @@ globalThis.addEventListener("unload", () => {
 
 serve((req: Request) => {
   const url = new URL(req.url);
+  
+  // Log alle Requests
+  console.log(`📨 ${req.method} ${url.pathname} - Origin: ${req.headers.get("origin") || "keine"}`);
 
-  // CORS-Headers für Frontend (localhost:5173 oder 5174)
+  // CORS-Headers für Frontend (localhost:5173)
   const origin = req.headers.get("origin") || "";
-  const allowedOrigins = ["http://localhost:5173", "http://localhost:5174"];
+  const allowedOrigins = [
+    "http://localhost:5173", 
+    "http://127.0.0.1:5173"
+  ];
   const corsOrigin = allowedOrigins.includes(origin) ? origin : "http://localhost:5173";
+  
+  console.log(`🔐 CORS: Anfrage von "${origin}" -> Antworte mit "${corsOrigin}"`);
   
   const corsHeaders = {
     "Access-Control-Allow-Origin": corsOrigin,
