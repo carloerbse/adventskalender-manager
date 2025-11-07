@@ -8,6 +8,7 @@ import {
   updateCalendar,
   deleteCalendar,
   isCalendarOwnedByUser,
+  shufflePouches,
 } from "../database.ts";
 
 /**
@@ -230,6 +231,43 @@ export async function handleDeleteCalendar(
     console.error("Fehler beim Löschen des Kalenders:", error);
     return new Response(
       JSON.stringify({ error: "Fehler beim Löschen des Kalenders" }),
+      { status: 500, headers: { "Content-Type": "application/json" } }
+    );
+  }
+}
+
+/**
+ * POST /api/calendars/:id/shuffle
+ * Mischt die Inhalte aller 24 Säckchen zufällig neu
+ */
+export async function handleShuffleCalendar(
+  req: Request,
+  userId: number,
+  calendarId: number
+): Promise<Response> {
+  try {
+    // Erst prüfen ob Kalender existiert und dem User gehört
+    if (!isCalendarOwnedByUser(calendarId, userId)) {
+      return new Response(
+        JSON.stringify({ error: "Kalender nicht gefunden oder Zugriff verweigert" }),
+        { status: 404, headers: { "Content-Type": "application/json" } }
+      );
+    }
+
+    // Säckchen mischen
+    const pouches = shufflePouches(calendarId);
+
+    return new Response(
+      JSON.stringify({ 
+        message: "Säckchen erfolgreich gemischt",
+        pouches 
+      }),
+      { status: 200, headers: { "Content-Type": "application/json" } }
+    );
+  } catch (error) {
+    console.error("Fehler beim Mischen der Säckchen:", error);
+    return new Response(
+      JSON.stringify({ error: "Fehler beim Mischen der Säckchen" }),
       { status: 500, headers: { "Content-Type": "application/json" } }
     );
   }

@@ -10,6 +10,7 @@ import {
   createCalendar as apiCreateCalendar,
   updateCalendar as apiUpdateCalendar,
   deleteCalendar as apiDeleteCalendar,
+  shuffleCalendar as apiShuffleCalendar,
 } from '../composables/useApi';
 
 export const useCalendarStore = defineStore('calendar', () => {
@@ -143,6 +144,30 @@ export const useCalendarStore = defineStore('calendar', () => {
   }
 
   /**
+   * Mischt die Säckchen-Inhalte eines Kalenders zufällig neu
+   */
+  async function shuffleCalendar(id: number) {
+    loading.value = true;
+    error.value = null;
+
+    try {
+      await apiShuffleCalendar(id);
+      
+      // Nach dem Mischen den Kalender neu laden, um die aktuellen Daten zu haben
+      // Dies stellt sicher, dass die UI die neuen Säckchen-Inhalte anzeigt
+      await loadCalendar(id);
+
+      console.log(`🎲 Kalender ${id} gemischt`);
+    } catch (err) {
+      error.value = err instanceof Error ? err.message : 'Unbekannter Fehler';
+      console.error('❌ Fehler beim Mischen des Kalenders:', err);
+      throw err;
+    } finally {
+      loading.value = false;
+    }
+  }
+
+  /**
    * Setzt den Store zurück (z.B. bei Logout)
    */
   function reset() {
@@ -166,6 +191,7 @@ export const useCalendarStore = defineStore('calendar', () => {
     createCalendar,
     updateCalendar,
     deleteCalendar,
+    shuffleCalendar,
     reset,
   };
 });

@@ -115,3 +115,21 @@ export async function deleteCalendar(id: number): Promise<void> {
     throw new Error(error.error || 'Fehler beim Löschen des Kalenders');
   }
 }
+
+/**
+ * Mischt die Inhalte aller 24 Säckchen eines Kalenders zufällig neu
+ */
+export async function shuffleCalendar(id: number): Promise<void> {
+  const response = await fetch(`${API_BASE_URL}/calendars/${id}/shuffle`, {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.error || 'Fehler beim Mischen der Säckchen');
+  }
+}

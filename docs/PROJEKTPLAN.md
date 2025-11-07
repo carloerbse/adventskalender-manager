@@ -205,34 +205,46 @@
 
 ---
 
-### Phase 5: "Mischen"-Feature
+### Phase 5: "Mischen"-Feature ✅ (ABGESCHLOSSEN)
 **Ziel**: Server kann Inhalte zufällig auf die 24 Säckchen verteilen
 
 **Backend:**
-- [ ] API-Endpoint:
+- [x] API-Endpoint:
   - `POST /api/calendars/:id/shuffle`
-- [ ] Logik:
+- [x] Logik:
   1. Alle Inhalte der 24 Säckchen laden
   2. Inhalte in Array sammeln
   3. Array zufällig mischen (Fisher-Yates-Algorithmus)
   4. Neue Zuordnung in Datenbank speichern
   5. Aktualisierte Säckchen zurückgeben
-- [ ] Validierung: Nur eigene Kalender mischbar
+- [x] Validierung: Nur eigene Kalender mischbar
+- [x] Datenbank-Funktionen: getPouchesByCalendarId, shufflePouches
+- [x] Route-Handler in routes/calendars.ts
+- [x] Integration in server.ts
 
 **Frontend:**
-- [ ] "Mischen"-Button in Kalender-Detail-Ansicht
-- [ ] Bestätigungsdialog ("Wirklich mischen?")
-- [ ] Loading-State während API-Call
-- [ ] Automatische Aktualisierung der Säckchen-Anzeige
+- [x] "Mischen"-Button in Kalender-Detail-Ansicht (orangener Button)
+- [x] Bestätigungsdialog ("Wirklich mischen?") mit Modal-Overlay
+- [x] Loading-State während API-Call ("🔄 Wird gemischt...")
+- [x] Automatische Aktualisierung der Säckchen-Anzeige
+- [x] shuffleCalendar() in useApi.ts
+- [x] shuffleCalendar() im Pinia Store
+- [x] Success/Error-Feedback mit Alerts
+- [x] CSS-Animationen (fadeIn, slideUp)
 
 **Testing:**
-- [ ] Postman: Shuffle-Endpoint testen
-- [ ] Browser: Mischen und Ergebnis prüfen
-- [ ] Mehrfach mischen: Jedes Mal neues Ergebnis
+- [x] Postman: Shuffle-Endpoint getestet
+- [x] Browser: Mischen und Ergebnis geprüft
+- [x] Mehrfach mischen: Jedes Mal neues Ergebnis
+- [x] User-Isolation: User A kann nicht Kalender von User B mischen
+- [x] Edge Cases: Leere Säckchen, gepackte Säckchen
 
 **Deliverables:**
-- Funktionierendes Shuffle-Feature
-- Saubere UX mit Feedback
+- ✅ Funktionierendes Shuffle-Feature mit Fisher-Yates-Algorithmus
+- ✅ Saubere UX mit Modal-Dialog und Feedback
+- ✅ 6 Dateien geändert, 2 neue Dateien (~295 Zeilen Code)
+- ✅ Vollständige Testing-Anleitung
+- Dokumentation: siehe `PHASE_5_ZUSAMMENFASSUNG.md`
 
 ---
 

@@ -14,6 +14,7 @@ import {
   handleGetCalendar,
   handleUpdateCalendar,
   handleDeleteCalendar,
+  handleShuffleCalendar,
 } from "./routes/calendars.ts";
 import {
   getPouches,
@@ -157,6 +158,21 @@ serve(async (req: Request) => {
     if (deleteCalendarMatch && req.method === "DELETE") {
       const calendarId = parseInt(deleteCalendarMatch[1]);
       const response = await handleDeleteCalendar(req, user.id, calendarId);
+      const newHeaders = new Headers(response.headers);
+      Object.entries(corsHeaders).forEach(([key, value]) => {
+        newHeaders.set(key, value);
+      });
+      return new Response(response.body, {
+        status: response.status,
+        headers: newHeaders,
+      });
+    }
+
+    // POST /api/calendars/:id/shuffle - Säckchen-Inhalte mischen
+    const shuffleCalendarMatch = url.pathname.match(/^\/api\/calendars\/(\d+)\/shuffle$/);
+    if (shuffleCalendarMatch && req.method === "POST") {
+      const calendarId = parseInt(shuffleCalendarMatch[1]);
+      const response = await handleShuffleCalendar(req, user.id, calendarId);
       const newHeaders = new Headers(response.headers);
       Object.entries(corsHeaders).forEach(([key, value]) => {
         newHeaders.set(key, value);

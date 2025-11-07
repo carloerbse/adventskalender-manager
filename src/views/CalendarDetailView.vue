@@ -12,6 +12,8 @@ const calendarStore = useCalendarStore();
 const pouchStore = usePouchStore();
 
 const calendarId = ref(parseInt(route.params.id as string));
+const isShuffling = ref(false);
+const showShuffleConfirm = ref(false);
 
 onMounted(async () => {
   try {
@@ -69,6 +71,30 @@ async function handleReload() {
   }
 }
 
+function showShuffleDialog() {
+  showShuffleConfirm.value = true;
+}
+
+function cancelShuffle() {
+  showShuffleConfirm.value = false;
+}
+
+async function confirmShuffle() {
+  showShuffleConfirm.value = false;
+  isShuffling.value = true;
+
+  try {
+    await calendarStore.shuffleCalendar(calendarId.value);
+    // Säckchen neu laden nach dem Mischen
+    await pouchStore.fetchPouches(calendarId.value);
+    alert('✅ Die Säckchen wurden erfolgreich gemischt!');
+  } catch (error) {
+    alert('❌ Fehler beim Mischen der Säckchen');
+  } finally {
+    isShuffling.value = false;
+  }
+}
+
 // Fortschritt berechnen
 const progress = computed(() => pouchStore.getProgress());
 </script>
@@ -94,12 +120,36 @@ const progress = computed(() => pouchStore.getProgress());
           ← Zurück
         </button>
         <div class="calendar-actions">
+          <button @click="showShuffleDialog" class="btn btn-shuffle" :disabled="isShuffling">
+            {{ isShuffling ? '🔄 Wird gemischt...' : '🎲 Mischen' }}
+          </button>
           <button @click="handleEdit" class="btn btn-secondary">
             ✏️ Bearbeiten
           </button>
           <button @click="handleDelete" class="btn btn-danger">
             🗑️ Löschen
           </button>
+        </div>
+      </div>
+
+      <!-- Shuffle Confirmation Dialog -->
+      <div v-if="showShuffleConfirm" class="modal-overlay" @click="cancelShuffle">
+        <div class="modal-content" @click.stop>
+          <h2>🎲 Säckchen mischen?</h2>
+          <p>
+            Möchtest du die Inhalte aller 24 Säckchen wirklich zufällig neu verteilen?
+          </p>
+          <p class="warning">
+            ⚠️ Diese Aktion kann nicht rückgängig gemacht werden!
+          </p>
+          <div class="modal-actions">
+            <button @click="cancelShuffle" class="btn btn-secondary">
+              Abbrechen
+            </button>
+            <button @click="confirmShuffle" class="btn btn-primary">
+              Ja, mischen!
+            </button>
+          </div>
         </div>
       </div>
 
@@ -220,6 +270,108 @@ const progress = computed(() => pouchStore.getProgress());
 
 .btn-danger:hover {
   background: #d32f2f;
+}
+
+.btn-shuffle {
+  background: #ff9800;
+  color: white;
+  border-color: #ff9800;
+}
+
+.btn-shuffle:hover:not(:disabled) {
+  background: #f57c00;
+}
+
+.btn-shuffle:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background: #4caf50;
+  color: white;
+  border-color: #4caf50;
+}
+
+.btn-primary:hover {
+  background: #388e3c;
+}
+
+/* Modal Overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+.modal-content {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  max-width: 500px;
+  width: 90%;
+  animation: slideUp 0.3s ease-out;
+}
+
+.modal-content h2 {
+  margin: 0 0 1rem 0;
+  color: #213547;
+  font-size: 1.5rem;
+}
+
+.modal-content p {
+  margin: 1rem 0;
+  color: #666;
+  line-height: 1.6;
+}
+
+.modal-content .warning {
+  color: #ff9800;
+  font-weight: 600;
+  background: #fff3e0;
+  padding: 0.75rem;
+  border-radius: 6px;
+  border-left: 4px solid #ff9800;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+  justify-content: flex-end;
+}
+
+.modal-actions .btn {
+  min-width: 120px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 .calendar-info {

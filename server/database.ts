@@ -273,3 +273,81 @@ export function isCalendarOwnedByUser(calendarId: number, userId: number): boole
 
   return result.length > 0;
 }
+
+// ============================================================================
+// SÄCKCHEN-FUNKTIONEN
+// ============================================================================
+
+/**
+ * Holt alle Säckchen eines Kalenders
+ */
+export function getPouchesByCalendarId(calendarId: number) {
+  const db = getDatabase();
+  
+  const pouches = db.query(`
+    SELECT id, calendar_id, number, content, notes, is_packed, created_at
+    FROM pouches
+    WHERE calendar_id = ?
+    ORDER BY number ASC
+  `, [calendarId]);
+
+  return pouches.map((row: unknown[]) => ({
+    id: row[0] as number,
+    calendar_id: row[1] as number,
+    number: row[2] as number,
+    content: row[3] as string,
+    notes: row[4] as string,
+    is_packed: row[5] as number,
+    created_at: row[6] as string,
+  }));
+}
+
+/**
+ * Mischt die Inhalte aller Säckchen eines Kalenders zufällig neu
+ * Verwendet den Fisher-Yates-Algorithmus für eine gleichmäßige Verteilung
+ * Gibt die neu gemischten Säckchen zurück
+ */
+export function shufflePouches(calendarId: number) {
+  const db = getDatabase();
+  
+  // 1. Alle Säckchen mit ihren Inhalten laden
+  const pouches = getPouchesByCalendarId(calendarId);
+  
+  if (pouches.length !== 24) {
+    throw new Error(`Kalender ${calendarId} hat nicht genau 24 Säckchen`);
+  }
+
+  // 2. Alle Inhalte in ein Array sammeln (content + notes)
+  const contents = pouches.map(p => ({
+    content: p.content,
+    notes: p.notes,
+  }));
+
+  // 3. Fisher-Yates-Shuffle für gleichmäßige Zufallsverteilung
+  for (let i = contents.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [contents[i], contents[j]] = [contents[j], contents[i]];
+  }
+
+  // 4. Neue Zuordnung in die Datenbank schreiben
+  const stmt = db.prepareQuery(`
+    UPDATE pouches
+    SET content = ?, notes = ?
+    WHERE id = ?
+  `);
+
+  for (let i = 0; i < pouches.length; i++) {
+    stmt.execute([
+      contents[i].content,
+      contents[i].notes,
+      pouches[i].id,
+    ]);
+  }
+
+  stmt.finalize();
+
+  console.log(`🎲 Säckchen von Kalender ${calendarId} gemischt`);
+
+  // 5. Aktualisierte Säckchen zurückgeben
+  return getPouchesByCalendarId(calendarId);
+}
