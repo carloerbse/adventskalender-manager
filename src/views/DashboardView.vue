@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useAuthStore } from '../stores/auth'
 import { useRouter } from 'vue-router'
+import CalendarList from '../components/calendar/CalendarList.vue'
 
 const authStore = useAuthStore()
 const router = useRouter()
@@ -14,7 +15,7 @@ async function handleLogout() {
 <template>
   <div class="dashboard">
     <header class="dashboard-header">
-      <h1>🎄 Mein Dashboard</h1>
+      <h1>🎄 Adventskalender-Manager</h1>
       <div class="user-info">
         <span>👤 {{ authStore.user?.username }}</span>
         <button @click="handleLogout" class="btn-logout">Abmelden</button>
@@ -22,13 +23,13 @@ async function handleLogout() {
     </header>
 
     <main class="dashboard-content">
-      <div class="welcome-card">
-        <h2>Willkommen zurück! 🎅</h2>
-        <p>Hier kommt bald die Kalender-Übersicht...</p>
-        <p class="hint">
-          <em>Phase 3: Kalender-CRUD wird als nächstes implementiert</em>
-        </p>
+      <div class="welcome-section">
+        <h2>Willkommen zurück, {{ authStore.user?.username }}! 🎅</h2>
+        <p>Verwalte deine Adventskalender und behalte den Überblick über alle 24 Säckchen.</p>
       </div>
+
+      <!-- Kalender-Liste -->
+      <CalendarList />
     </main>
   </div>
 </template>
@@ -85,29 +86,19 @@ async function handleLogout() {
   margin: 0 auto;
 }
 
-.welcome-card {
-  background: white;
-  padding: 2rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+.welcome-section {
   text-align: center;
+  margin-bottom: 2rem;
 }
 
-.welcome-card h2 {
-  color: #667eea;
-  margin-bottom: 1rem;
-}
-
-.welcome-card p {
-  color: #666;
-  font-size: 1.1rem;
+.welcome-section h2 {
+  color: #213547;
   margin-bottom: 0.5rem;
 }
 
-.hint {
-  margin-top: 2rem;
-  font-size: 0.9rem;
-  color: #999;
+.welcome-section p {
+  color: #666;
+  font-size: 1.05rem;
 }
 
 @media (max-width: 768px) {

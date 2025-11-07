@@ -45,10 +45,34 @@ const routes: RouteRecordRaw[] = [
       requiresAuth: true
     }
   },
-  // Weitere Routen werden in Phase 3 hinzugefügt:
-  // - /calendar (Kalender-Liste)
-  // - /calendar/:id (Kalender-Details)
-  // - /calendar/:id/edit
+  {
+    path: '/calendar/new',
+    name: 'calendar-new',
+    component: () => import('../views/CalendarEditView.vue'),
+    meta: {
+      title: 'Neuer Kalender - Adventskalender-Manager',
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/calendar/:id',
+    name: 'calendar-detail',
+    component: () => import('../views/CalendarDetailView.vue'),
+    meta: {
+      title: 'Kalender - Adventskalender-Manager',
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/calendar/:id/edit',
+    name: 'calendar-edit',
+    component: () => import('../views/CalendarEditView.vue'),
+    meta: {
+      title: 'Kalender bearbeiten - Adventskalender-Manager',
+      requiresAuth: true
+    }
+  },
+  // Weitere Routen werden in späteren Phasen hinzugefügt:
   // - /admin (Admin-Panel)
 ]
 

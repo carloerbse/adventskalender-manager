@@ -1,12 +1,20 @@
 // server/server.ts
 import { serve } from "https://deno.land/std@0.224.0/http/server.ts";
 import { initDatabase, closeDatabase } from "./database.ts";
+import { requireAuth } from "./auth.ts";
 import {
   handleRegister,
   handleLogin,
   handleLogout,
   handleSessionCheck,
 } from "./routes/auth.ts";
+import {
+  handleGetCalendars,
+  handleCreateCalendar,
+  handleGetCalendar,
+  handleUpdateCalendar,
+  handleDeleteCalendar,
+} from "./routes/calendars.ts";
 
 const PORT = 8000;
 
@@ -66,6 +74,93 @@ serve(async (req: Request) => {
 
   if (url.pathname === "/api/auth/session" && req.method === "GET") {
     return handleSessionCheck(req, corsHeaders);
+  }
+
+  // Kalender-Endpoints (alle erfordern Authentifizierung)
+  if (url.pathname.startsWith("/api/calendars")) {
+    const user = requireAuth(req);
+    
+    if (!user) {
+      return new Response(
+        JSON.stringify({ error: "Nicht authentifiziert" }),
+        {
+          status: 401,
+          headers: { "Content-Type": "application/json", ...corsHeaders },
+        }
+      );
+    }
+
+    // GET /api/calendars - Alle Kalender des Users
+    if (url.pathname === "/api/calendars" && req.method === "GET") {
+      const response = await handleGetCalendars(req, user.id);
+      // CORS-Headers hinzufügen
+      const newHeaders = new Headers(response.headers);
+      Object.entries(corsHeaders).forEach(([key, value]) => {
+        newHeaders.set(key, value);
+      });
+      return new Response(response.body, {
+        status: response.status,
+        headers: newHeaders,
+      });
+    }
+
+    // POST /api/calendars - Neuen Kalender erstellen
+    if (url.pathname === "/api/calendars" && req.method === "POST") {
+      const response = await handleCreateCalendar(req, user.id);
+      const newHeaders = new Headers(response.headers);
+      Object.entries(corsHeaders).forEach(([key, value]) => {
+        newHeaders.set(key, value);
+      });
+      return new Response(response.body, {
+        status: response.status,
+        headers: newHeaders,
+      });
+    }
+
+    // GET /api/calendars/:id - Einzelnen Kalender abrufen
+    const getCalendarMatch = url.pathname.match(/^\/api\/calendars\/(\d+)$/);
+    if (getCalendarMatch && req.method === "GET") {
+      const calendarId = parseInt(getCalendarMatch[1]);
+      const response = await handleGetCalendar(req, user.id, calendarId);
+      const newHeaders = new Headers(response.headers);
+      Object.entries(corsHeaders).forEach(([key, value]) => {
+        newHeaders.set(key, value);
+      });
+      return new Response(response.body, {
+        status: response.status,
+        headers: newHeaders,
+      });
+    }
+
+    // PUT /api/calendars/:id - Kalender aktualisieren
+    const updateCalendarMatch = url.pathname.match(/^\/api\/calendars\/(\d+)$/);
+    if (updateCalendarMatch && req.method === "PUT") {
+      const calendarId = parseInt(updateCalendarMatch[1]);
+      const response = await handleUpdateCalendar(req, user.id, calendarId);
+      const newHeaders = new Headers(response.headers);
+      Object.entries(corsHeaders).forEach(([key, value]) => {
+        newHeaders.set(key, value);
+      });
+      return new Response(response.body, {
+        status: response.status,
+        headers: newHeaders,
+      });
+    }
+
+    // DELETE /api/calendars/:id - Kalender löschen
+    const deleteCalendarMatch = url.pathname.match(/^\/api\/calendars\/(\d+)$/);
+    if (deleteCalendarMatch && req.method === "DELETE") {
+      const calendarId = parseInt(deleteCalendarMatch[1]);
+      const response = await handleDeleteCalendar(req, user.id, calendarId);
+      const newHeaders = new Headers(response.headers);
+      Object.entries(corsHeaders).forEach(([key, value]) => {
+        newHeaders.set(key, value);
+      });
+      return new Response(response.body, {
+        status: response.status,
+        headers: newHeaders,
+      });
+    }
   }
 
   // Test-Endpoint

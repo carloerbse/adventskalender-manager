@@ -106,45 +106,67 @@
 
 ---
 
-### Phase 3: Kalender-CRUD (4-5 Tage)
+### Phase 3: Kalender-CRUD ✅ (ABGESCHLOSSEN)
 **Ziel**: Benutzer können Kalender erstellen, bearbeiten, löschen und anzeigen
 
 **Backend:**
-- [ ] API-Endpoints für Kalender:
+- [x] API-Endpoints für Kalender:
   - `GET /api/calendars` (Liste eigener Kalender)
   - `POST /api/calendars` (Neuen Kalender erstellen)
   - `GET /api/calendars/:id` (Einzelnen Kalender abrufen)
   - `PUT /api/calendars/:id` (Kalender bearbeiten)
   - `DELETE /api/calendars/:id` (Kalender löschen)
-- [ ] Validierung: User darf nur eigene Kalender sehen/ändern
-- [ ] Beim Erstellen: Automatisch 24 leere Säckchen anlegen
+- [x] Validierung: User darf nur eigene Kalender sehen/ändern
+- [x] Beim Erstellen: Automatisch 24 leere Säckchen anlegen
+- [x] Datenbank-Funktionen in `database.ts`
+- [x] Route-Handler in `routes/calendars.ts`
+- [x] Integration in `server.ts` mit Auth-Middleware
 
 **Frontend:**
-- [ ] Dashboard-Komponente (`CalendarDashboard.vue`)
-  - Liste aller Kalender
-  - Fortschrittsanzeige pro Kalender
-  - Buttons: Neu, Bearbeiten, Löschen
-- [ ] Kalender-Formular (`CalendarForm.vue`)
-  - Name, Beschreibung
-  - Speichern/Abbrechen
-- [ ] Kalender-Karte (`CalendarCard.vue`)
-  - Anzeige eines Kalenders in der Liste
-  - Progress-Bar
-- [ ] Routing:
+- [x] Dashboard erweitert (`DashboardView.vue`)
+  - CalendarList-Komponente eingebunden
+  - Willkommens-Nachricht
+- [x] Kalender-Liste (`CalendarList.vue`)
+  - Grid-Layout mit CalendarCard-Komponenten
+  - "Neu erstellen"-Button
+  - Loading-, Error- und Empty-States
+- [x] Kalender-Karte (`CalendarCard.vue`)
+  - Anzeige mit Name, Beschreibung, Fortschritt
+  - Progress-Bar mit Farbverlauf
+  - Action-Buttons (Öffnen, Bearbeiten, Löschen)
+- [x] Kalender-Formular (`CalendarForm.vue`)
+  - Wiederverwendbar für Create & Edit
+  - Validierung mit Zeichen-Zähler
+  - Speichern/Abbrechen-Buttons
+- [x] Kalender-Detail (`CalendarDetailView.vue`)
+  - Detailansicht mit Fortschritts-Anzeige
+  - Placeholder für Säckchen (Phase 4)
+- [x] Kalender-Edit (`CalendarEditView.vue`)
+  - Nutzt CalendarForm-Komponente
+- [x] Routing:
   - `/dashboard` - Übersicht
   - `/calendar/new` - Neuer Kalender
   - `/calendar/:id` - Kalender-Detail
   - `/calendar/:id/edit` - Kalender bearbeiten
+- [x] Pinia Store (`stores/calendar.ts`)
+  - Reactive State Management
+  - CRUD-Actions
+- [x] API-Funktionen (`composables/useApi.ts`)
+  - Alle CRUD-Operationen
 
 **Testing:**
-- [ ] Postman: CRUD-Operationen testen
-- [ ] Browser: Kalender erstellen, bearbeiten, löschen
-- [ ] Prüfen: Benutzer A sieht keine Kalender von Benutzer B
+- [x] Postman: CRUD-Operationen getestet
+- [x] Browser: Kalender erstellen, bearbeiten, löschen
+- [x] Geprüft: Benutzer A sieht keine Kalender von Benutzer B
+- [x] Fortschrittsanzeige funktioniert (0/24)
 
 **Deliverables:**
-- Vollständiger CRUD-Zyklus für Kalender
-- Saubere UI mit Reactivity
-- Benutzer-Isolation funktioniert
+- ✅ Vollständiger CRUD-Zyklus für Kalender
+- ✅ Saubere UI mit Reactivity und Vue 3 Composition API
+- ✅ Benutzer-Isolation funktioniert einwandfrei
+- ✅ 10 neue Dateien erstellt, 5 bearbeitet (~1.300 Zeilen Code)
+- ✅ Responsive Design (Desktop, Tablet, Mobile)
+- Dokumentation: siehe `PHASE_3_ZUSAMMENFASSUNG.md`
 
 ---
 

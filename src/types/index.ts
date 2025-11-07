@@ -20,6 +20,8 @@ export interface Calendar {
   name: string;
   description: string;
   created_at: string;
+  packed_count: number; // Anzahl gepackte Säckchen
+  total_pouches: number; // Gesamtanzahl Säckchen (immer 24)
   pouches?: Pouch[];
   progress?: CalendarProgress;
 }

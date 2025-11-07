@@ -126,3 +126,150 @@ export function cleanupExpiredSessions(): void {
   const result = db.query(`DELETE FROM sessions WHERE expires_at < ?`, [now]);
   console.log(`🧹 ${result.length} abgelaufene Sessions gelöscht`);
 }
+
+// ============================================================================
+// KALENDER-CRUD-FUNKTIONEN
+// ============================================================================
+
+/**
+ * Holt alle Kalender eines bestimmten Benutzers
+ */
+export function getCalendarsByUserId(userId: number) {
+  const db = getDatabase();
+  
+  const calendars = db.query(`
+    SELECT c.*, 
+           COUNT(CASE WHEN p.is_packed = 1 THEN 1 END) as packed_count,
+           COUNT(p.id) as total_pouches
+    FROM calendars c
+    LEFT JOIN pouches p ON c.id = p.calendar_id
+    WHERE c.user_id = ?
+    GROUP BY c.id
+    ORDER BY c.created_at DESC
+  `, [userId]);
+
+  return calendars.map((row: unknown[]) => ({
+    id: row[0] as number,
+    user_id: row[1] as number,
+    name: row[2] as string,
+    description: row[3] as string,
+    created_at: row[4] as string,
+    packed_count: row[5] as number,
+    total_pouches: row[6] as number,
+  }));
+}
+
+/**
+ * Holt einen einzelnen Kalender nach ID
+ * Gibt null zurück, wenn Kalender nicht existiert
+ */
+export function getCalendarById(calendarId: number) {
+  const db = getDatabase();
+  
+  const result = db.query(`
+    SELECT c.*, 
+           COUNT(CASE WHEN p.is_packed = 1 THEN 1 END) as packed_count,
+           COUNT(p.id) as total_pouches
+    FROM calendars c
+    LEFT JOIN pouches p ON c.id = p.calendar_id
+    WHERE c.id = ?
+    GROUP BY c.id
+  `, [calendarId]);
+
+  if (result.length === 0) return null;
+
+  const row = result[0];
+  return {
+    id: row[0] as number,
+    user_id: row[1] as number,
+    name: row[2] as string,
+    description: row[3] as string,
+    created_at: row[4] as string,
+    packed_count: row[5] as number,
+    total_pouches: row[6] as number,
+  };
+}
+
+/**
+ * Erstellt einen neuen Kalender mit 24 leeren Säckchen
+ * Gibt die ID des neuen Kalenders zurück
+ */
+export function createCalendar(userId: number, name: string, description: string = ""): number {
+  const db = getDatabase();
+  
+  // Kalender erstellen
+  db.query(`
+    INSERT INTO calendars (user_id, name, description)
+    VALUES (?, ?, ?)
+  `, [userId, name, description]);
+
+  // ID des neu erstellten Kalenders holen
+  const result = db.query(`SELECT last_insert_rowid()`);
+  const calendarId = result[0][0] as number;
+
+  // Automatisch 24 Säckchen erstellen
+  createPouchesForCalendar(calendarId);
+
+  console.log(`✅ Kalender "${name}" (ID: ${calendarId}) für User ${userId} erstellt`);
+  
+  return calendarId;
+}
+
+/**
+ * Aktualisiert einen bestehenden Kalender
+ * Gibt true zurück bei Erfolg, false wenn Kalender nicht existiert
+ */
+export function updateCalendar(calendarId: number, name: string, description: string = ""): boolean {
+  const db = getDatabase();
+  
+  const result = db.query(`
+    UPDATE calendars
+    SET name = ?, description = ?
+    WHERE id = ?
+  `, [name, description, calendarId]);
+
+  // SQLite gibt die Anzahl der geänderten Zeilen nicht direkt zurück
+  // Prüfen ob Kalender existiert
+  const check = db.query(`SELECT id FROM calendars WHERE id = ?`, [calendarId]);
+  
+  if (check.length === 0) {
+    return false;
+  }
+
+  console.log(`✅ Kalender ${calendarId} aktualisiert: "${name}"`);
+  return true;
+}
+
+/**
+ * Löscht einen Kalender (inkl. aller Säckchen durch CASCADE)
+ * Gibt true zurück bei Erfolg, false wenn Kalender nicht existiert
+ */
+export function deleteCalendar(calendarId: number): boolean {
+  const db = getDatabase();
+  
+  // Erst prüfen ob Kalender existiert
+  const check = db.query(`SELECT id FROM calendars WHERE id = ?`, [calendarId]);
+  
+  if (check.length === 0) {
+    return false;
+  }
+
+  // Kalender löschen (Säckchen werden automatisch durch CASCADE gelöscht)
+  db.query(`DELETE FROM calendars WHERE id = ?`, [calendarId]);
+
+  console.log(`✅ Kalender ${calendarId} gelöscht (inkl. aller Säckchen)`);
+  return true;
+}
+
+/**
+ * Prüft ob ein Kalender einem bestimmten Benutzer gehört
+ */
+export function isCalendarOwnedByUser(calendarId: number, userId: number): boolean {
+  const db = getDatabase();
+  
+  const result = db.query(`
+    SELECT id FROM calendars WHERE id = ? AND user_id = ?
+  `, [calendarId, userId]);
+
+  return result.length > 0;
+}
