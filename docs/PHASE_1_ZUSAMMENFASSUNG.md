@@ -1,9 +1,5 @@
 # Phase 1 Zusammenfassung: Grundgerüst & Datenbank
 
-**Status**: ✅ Abgeschlossen  
-**Datum**: 06.11.2025  
-**Dauer**: ~1 Stunde
-
 ---
 
 ## 🎯 Erreichte Ziele
@@ -159,8 +155,6 @@
    - [ ] Postman: Login/Logout testen
    - [ ] Browser: Session über Refresh erhalten
    - [ ] Multi-User-Test (zwei Browser)
-
-**Geschätzte Zeit**: 3-4 Tage
 
 ---
 

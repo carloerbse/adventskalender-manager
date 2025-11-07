@@ -36,10 +36,10 @@ function handleDelete() {
 </script>
 
 <template>
-  <div class="calendar-card">
+  <div class="calendar-card" @click="emit('open', calendar.id)">
     <div class="calendar-header">
       <h3>{{ calendar.name }}</h3>
-      <div class="calendar-actions">
+      <div class="calendar-actions" @click.stop>
         <button @click="emit('open', calendar.id)" class="btn-icon" title="Öffnen">
           📖
         </button>
@@ -81,11 +81,13 @@ function handleDelete() {
   border-radius: 8px;
   padding: 1.5rem;
   transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
 }
 
 .calendar-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-color: #42b983;
 }
 
 .calendar-header {

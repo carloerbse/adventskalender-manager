@@ -15,6 +15,11 @@ import {
   handleUpdateCalendar,
   handleDeleteCalendar,
 } from "./routes/calendars.ts";
+import {
+  getPouches,
+  updatePouch,
+  togglePouchPacked,
+} from "./routes/pouches.ts";
 
 const PORT = 8000;
 
@@ -152,6 +157,63 @@ serve(async (req: Request) => {
     if (deleteCalendarMatch && req.method === "DELETE") {
       const calendarId = parseInt(deleteCalendarMatch[1]);
       const response = await handleDeleteCalendar(req, user.id, calendarId);
+      const newHeaders = new Headers(response.headers);
+      Object.entries(corsHeaders).forEach(([key, value]) => {
+        newHeaders.set(key, value);
+      });
+      return new Response(response.body, {
+        status: response.status,
+        headers: newHeaders,
+      });
+    }
+
+    // GET /api/calendars/:id/pouches - Alle Säckchen eines Kalenders
+    const getPouchesMatch = url.pathname.match(/^\/api\/calendars\/(\d+)\/pouches$/);
+    if (getPouchesMatch && req.method === "GET") {
+      const response = await getPouches(req, user.id);
+      const newHeaders = new Headers(response.headers);
+      Object.entries(corsHeaders).forEach(([key, value]) => {
+        newHeaders.set(key, value);
+      });
+      return new Response(response.body, {
+        status: response.status,
+        headers: newHeaders,
+      });
+    }
+  }
+
+  // Säckchen-Endpoints (alle erfordern Authentifizierung)
+  if (url.pathname.startsWith("/api/pouches")) {
+    const user = requireAuth(req);
+    
+    if (!user) {
+      return new Response(
+        JSON.stringify({ error: "Nicht authentifiziert" }),
+        {
+          status: 401,
+          headers: { "Content-Type": "application/json", ...corsHeaders },
+        }
+      );
+    }
+
+    // PUT /api/pouches/:id - Säckchen aktualisieren
+    const updatePouchMatch = url.pathname.match(/^\/api\/pouches\/(\d+)$/);
+    if (updatePouchMatch && req.method === "PUT") {
+      const response = await updatePouch(req, user.id);
+      const newHeaders = new Headers(response.headers);
+      Object.entries(corsHeaders).forEach(([key, value]) => {
+        newHeaders.set(key, value);
+      });
+      return new Response(response.body, {
+        status: response.status,
+        headers: newHeaders,
+      });
+    }
+
+    // PATCH /api/pouches/:id/toggle - Gepackt-Status umschalten
+    const togglePouchMatch = url.pathname.match(/^\/api\/pouches\/(\d+)\/toggle$/);
+    if (togglePouchMatch && req.method === "PATCH") {
+      const response = await togglePouchPacked(req, user.id);
       const newHeaders = new Headers(response.headers);
       Object.entries(corsHeaders).forEach(([key, value]) => {
         newHeaders.set(key, value);

@@ -170,42 +170,42 @@
 
 ---
 
-### Phase 4: Säckchen-Verwaltung (4-5 Tage)
+### Phase 4: Säckchen-Verwaltung
 **Ziel**: 24 Säckchen pro Kalender verwalten
 
 **Backend:**
-- [ ] API-Endpoints für Säckchen:
+- [x] API-Endpoints für Säckchen:
   - `GET /api/calendars/:id/pouches` (Alle 24 Säckchen)
   - `PUT /api/pouches/:id` (Säckchen bearbeiten)
   - `PATCH /api/pouches/:id/toggle` (Gepackt-Status umschalten)
-- [ ] Fortschritts-Berechnung im Backend
-- [ ] Validierung: Nur Säckchen des eigenen Kalenders änderbar
+- [x] Fortschritts-Berechnung im Backend
+- [x] Validierung: Nur Säckchen des eigenen Kalenders änderbar
 
 **Frontend:**
-- [ ] Säckchen-Liste (`PouchList.vue`)
+- [x] Säckchen-Liste (`PouchList.vue`)
   - Grid/Liste mit allen 24 Säckchen
   - Nummer, Inhalt, Notiz, Status anzeigen
-- [ ] Säckchen-Item (`PouchItem.vue`)
+- [x] Säckchen-Item (`PouchItem.vue`)
   - Inline-Editing oder Modal
   - Checkbox für "gepackt"
   - Input für Inhalt und Notizen
-- [ ] Fortschrittsanzeige (`ProgressBar.vue`)
+- [x] Fortschrittsanzeige (`ProgressBar.vue`)
   - Visualisierung: "17/24 gepackt"
-- [ ] Reaktive Updates beim Ändern
+- [x] Reaktive Updates beim Ändern
 
 **Testing:**
-- [ ] Postman: Säckchen abrufen und ändern
-- [ ] Browser: Alle 24 Säckchen bearbeiten
-- [ ] Reaktivität: Änderungen sofort sichtbar
+- [x] Postman: Säckchen abrufen und ändern
+- [x] Browser: Alle 24 Säckchen bearbeiten
+- [x] Reaktivität: Änderungen sofort sichtbar
 
 **Deliverables:**
-- Vollständige Säckchen-Verwaltung
-- Fortschritts-Tracking funktioniert
-- Intuitive Benutzeroberfläche
+- ✅ Vollständige Säckchen-Verwaltung
+- ✅ Fortschritts-Tracking funktioniert
+- ✅ Intuitive Benutzeroberfläche
 
 ---
 
-### Phase 5: "Mischen"-Feature (2-3 Tage)
+### Phase 5: "Mischen"-Feature
 **Ziel**: Server kann Inhalte zufällig auf die 24 Säckchen verteilen
 
 **Backend:**
@@ -236,7 +236,7 @@
 
 ---
 
-### Phase 6: Export-Funktion (2 Tage)
+### Phase 6: Export-Funktion
 **Ziel**: Kalender als JSON oder CSV exportieren
 
 **Backend:**
@@ -261,7 +261,7 @@
 
 ---
 
-### Phase 7: Admin-Bereich (2-3 Tage)
+### Phase 7: Admin-Bereich
 **Ziel**: Admin kann Benutzer verwalten
 
 **Backend:**
@@ -289,7 +289,7 @@
 
 ---
 
-### Phase 8: UI-Verbesserungen & Polishing (2-3 Tage)
+### Phase 8: UI-Verbesserungen & Polishing
 **Ziel**: Anwendung benutzerfreundlich und ansprechend gestalten
 
 **Frontend:**
@@ -320,7 +320,7 @@
 
 ---
 
-### Phase 9: Testing & Bug-Fixing (2-3 Tage)
+### Phase 9: Testing & Bug-Fixing
 **Ziel**: Alle Funktionen gründlich testen
 
 **Testszenarien:**
@@ -350,7 +350,7 @@
 
 ---
 
-### Phase 10: Dokumentation (3-4 Tage)
+### Phase 10: Dokumentation
 **Ziel**: Alle geforderten Dokumente erstellen
 
 **Installationsanleitung (A):**
@@ -392,7 +392,7 @@
 
 ---
 
-### Phase 11: Deployment & Finalisierung (1-2 Tage)
+### Phase 11: Deployment & Finalisierung
 **Ziel**: Projekt abgabebereit machen
 
 **Deployment:**
@@ -639,10 +639,6 @@ adventskalender-manager/
 2. ⏭️ **Phase 1 starten**: Datenbank einrichten
 3. ⏭️ Git-Repository für regelmäßige Commits nutzen
 4. ⏭️ Nach jeder Phase: Testen und dokumentieren
-
-**Geschätzte Gesamtdauer**: 25-35 Tage (bei 2-4h/Tag)  
-**Verfügbare Zeit bis Deadline**: 15 Tage  
-**Empfehlung**: Sofort mit Phase 1 beginnen!
 
 ---
 

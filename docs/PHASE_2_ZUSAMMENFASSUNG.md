@@ -1,9 +1,5 @@
 # Phase 2: Authentifizierung & Session-Management ✅
 
-**Status:** Abgeschlossen  
-**Datum:** `date`  
-**Dauer:** ~2-3 Stunden (geschätzt)
-
 ## 🎯 Ziele Phase 2
 - ✅ Benutzerregistrierung und -anmeldung
 - ✅ Session-Management mit Cookies

@@ -1,17 +1,22 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useCalendarStore } from '../stores/calendar';
+import { usePouchStore } from '../stores/pouch';
+import ProgressBar from '../components/common/ProgressBar.vue';
+import PouchList from '../components/pouch/PouchList.vue';
 
 const route = useRoute();
 const router = useRouter();
 const calendarStore = useCalendarStore();
+const pouchStore = usePouchStore();
 
 const calendarId = ref(parseInt(route.params.id as string));
 
 onMounted(async () => {
   try {
     await calendarStore.loadCalendar(calendarId.value);
+    await pouchStore.fetchPouches(calendarId.value);
   } catch (error) {
     console.error('Fehler beim Laden des Kalenders:', error);
   }
@@ -35,6 +40,37 @@ async function handleDelete() {
     }
   }
 }
+
+async function handleUpdatePouch(pouchId: number, content: string, notes: string, is_packed: boolean) {
+  try {
+    await pouchStore.updatePouch(pouchId, content, notes, is_packed);
+    // Kalender neu laden um Fortschritt zu aktualisieren
+    await calendarStore.loadCalendar(calendarId.value);
+  } catch (error) {
+    alert('Fehler beim Aktualisieren des Säckchens');
+  }
+}
+
+async function handleTogglePouch(pouchId: number) {
+  try {
+    await pouchStore.togglePacked(pouchId);
+    // Kalender neu laden um Fortschritt zu aktualisieren
+    await calendarStore.loadCalendar(calendarId.value);
+  } catch (error) {
+    alert('Fehler beim Umschalten des Status');
+  }
+}
+
+async function handleReload() {
+  try {
+    await pouchStore.fetchPouches(calendarId.value);
+  } catch (error) {
+    console.error('Fehler beim Neuladen:', error);
+  }
+}
+
+// Fortschritt berechnen
+const progress = computed(() => pouchStore.getProgress());
 </script>
 
 <template>
@@ -71,24 +107,6 @@ async function handleDelete() {
       <div class="calendar-info">
         <h1>{{ calendarStore.currentCalendar.name }}</h1>
         <p class="description">{{ calendarStore.currentCalendar.description || 'Keine Beschreibung' }}</p>
-        
-        <!-- Progress -->
-        <div class="progress-section">
-          <h3>Fortschritt</h3>
-          <div class="progress-display">
-            <span class="progress-text">
-              {{ calendarStore.currentCalendar.packed_count }} / {{ calendarStore.currentCalendar.total_pouches }} Säckchen gepackt
-            </span>
-            <div class="progress-bar">
-              <div 
-                class="progress-fill"
-                :style="{ 
-                  width: `${(calendarStore.currentCalendar.packed_count / calendarStore.currentCalendar.total_pouches) * 100}%`
-                }"
-              ></div>
-            </div>
-          </div>
-        </div>
 
         <!-- Info Box -->
         <div class="info-box">
@@ -97,13 +115,22 @@ async function handleDelete() {
         </div>
       </div>
 
-      <!-- Pouches Section (Placeholder for Phase 4) -->
+      <!-- Progress Bar -->
+      <ProgressBar
+        :packed="progress.packed"
+        :total="progress.total"
+      />
+
+      <!-- Pouches Section -->
       <div class="pouches-section">
-        <h2>24 Säckchen</h2>
-        <div class="placeholder">
-          <p>🎁 Die Säckchen-Verwaltung wird in Phase 4 implementiert.</p>
-          <p class="hint">Hier kannst du bald die Inhalte der 24 Säckchen verwalten.</p>
-        </div>
+        <PouchList
+          :pouches="pouchStore.pouches"
+          :loading="pouchStore.loading"
+          :error="pouchStore.error"
+          @update="handleUpdatePouch"
+          @toggle="handleTogglePouch"
+          @reload="handleReload"
+        />
       </div>
     </div>
   </div>
@@ -131,7 +158,7 @@ async function handleDelete() {
 }
 
 .calendar-content {
-  max-width: 1000px;
+  max-width: 1400px;
   margin: 0 auto;
 }
 
@@ -215,44 +242,6 @@ async function handleDelete() {
   line-height: 1.6;
 }
 
-.progress-section {
-  margin-bottom: 2rem;
-}
-
-.progress-section h3 {
-  margin-bottom: 1rem;
-  color: #213547;
-}
-
-.progress-display {
-  background: #f5f5f5;
-  padding: 1.5rem;
-  border-radius: 6px;
-}
-
-.progress-text {
-  display: block;
-  margin-bottom: 0.75rem;
-  font-weight: 600;
-  font-size: 1.1rem;
-  color: #213547;
-}
-
-.progress-bar {
-  width: 100%;
-  height: 12px;
-  background: #e0e0e0;
-  border-radius: 6px;
-  overflow: hidden;
-}
-
-.progress-fill {
-  height: 100%;
-  background: linear-gradient(90deg, #4caf50, #8bc34a);
-  transition: width 0.3s ease;
-  border-radius: 6px;
-}
-
 .info-box {
   padding-top: 1.5rem;
   border-top: 1px solid #e0e0e0;
@@ -268,30 +257,6 @@ async function handleDelete() {
   padding: 2rem;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-.pouches-section h2 {
-  margin: 0 0 1.5rem 0;
-  color: #213547;
-}
-
-.placeholder {
-  text-align: center;
-  padding: 3rem;
-  background: #f5f5f5;
-  border-radius: 8px;
-  border: 2px dashed #ddd;
-}
-
-.placeholder p {
-  color: #666;
-  font-size: 1.1rem;
-  margin-bottom: 0.5rem;
-}
-
-.hint {
-  color: #999;
-  font-size: 0.95rem;
 }
 
 @media (max-width: 768px) {
