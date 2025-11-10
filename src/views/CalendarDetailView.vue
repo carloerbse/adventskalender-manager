@@ -3,6 +3,7 @@ import { ref, onMounted, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useCalendarStore } from '../stores/calendar';
 import { usePouchStore } from '../stores/pouch';
+import { exportCalendar } from '../composables/useApi';
 import ProgressBar from '../components/common/ProgressBar.vue';
 import PouchList from '../components/pouch/PouchList.vue';
 
@@ -14,6 +15,7 @@ const pouchStore = usePouchStore();
 const calendarId = ref(parseInt(route.params.id as string));
 const isShuffling = ref(false);
 const showShuffleConfirm = ref(false);
+const isExporting = ref(false);
 
 onMounted(async () => {
   try {
@@ -95,6 +97,31 @@ async function confirmShuffle() {
   }
 }
 
+// Export-Funktionen
+async function handleExportJSON() {
+  isExporting.value = true;
+  try {
+    await exportCalendar(calendarId.value, 'json');
+    // Erfolg - Download wird automatisch gestartet
+  } catch (error) {
+    alert('❌ Fehler beim Exportieren als JSON');
+  } finally {
+    isExporting.value = false;
+  }
+}
+
+async function handleExportCSV() {
+  isExporting.value = true;
+  try {
+    await exportCalendar(calendarId.value, 'csv');
+    // Erfolg - Download wird automatisch gestartet
+  } catch (error) {
+    alert('❌ Fehler beim Exportieren als CSV');
+  } finally {
+    isExporting.value = false;
+  }
+}
+
 // Fortschritt berechnen
 const progress = computed(() => pouchStore.getProgress());
 </script>
@@ -122,6 +149,12 @@ const progress = computed(() => pouchStore.getProgress());
         <div class="calendar-actions">
           <button @click="showShuffleDialog" class="btn btn-shuffle" :disabled="isShuffling">
             {{ isShuffling ? '🔄 Wird gemischt...' : '🎲 Mischen' }}
+          </button>
+          <button @click="handleExportJSON" class="btn btn-export" :disabled="isExporting">
+            {{ isExporting ? '⏳ Exportiere...' : '📥 JSON' }}
+          </button>
+          <button @click="handleExportCSV" class="btn btn-export" :disabled="isExporting">
+            {{ isExporting ? '⏳ Exportiere...' : '📊 CSV' }}
           </button>
           <button @click="handleEdit" class="btn btn-secondary">
             ✏️ Bearbeiten
@@ -283,6 +316,21 @@ const progress = computed(() => pouchStore.getProgress());
 }
 
 .btn-shuffle:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-export {
+  background: #9c27b0;
+  color: white;
+  border-color: #9c27b0;
+}
+
+.btn-export:hover:not(:disabled) {
+  background: #7b1fa2;
+}
+
+.btn-export:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }

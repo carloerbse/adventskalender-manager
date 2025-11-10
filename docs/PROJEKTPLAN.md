@@ -248,28 +248,37 @@
 
 ---
 
-### Phase 6: Export-Funktion
+### Phase 6: Export-Funktion ✅ (ABGESCHLOSSEN)
 **Ziel**: Kalender als JSON oder CSV exportieren
 
 **Backend:**
-- [ ] API-Endpoints:
+- [x] API-Endpoints:
   - `GET /api/calendars/:id/export?format=json`
   - `GET /api/calendars/:id/export?format=csv`
-- [ ] JSON-Export: Vollständiges Kalender-Objekt mit allen Säckchen
-- [ ] CSV-Export: Tabelle (Nummer, Inhalt, Notiz, Gepackt)
-- [ ] Passende HTTP-Headers für Download
+- [x] JSON-Export: Vollständiges Kalender-Objekt mit allen Säckchen
+- [x] CSV-Export: Tabelle (Nummer, Inhalt, Notiz, Gepackt)
+- [x] Passende HTTP-Headers für Download
+- [x] Datenbank-Funktionen: getCalendarWithPouches, convertToCSV
+- [x] User-Isolation und Validierung
 
 **Frontend:**
-- [ ] Export-Button(s) in Kalender-Detail
-- [ ] Format-Auswahl (JSON/CSV)
-- [ ] Download-Trigger via `fetch()` mit Blob
+- [x] Export-Buttons in Kalender-Detail (📥 JSON, 📊 CSV)
+- [x] Automatischer Download-Trigger
+- [x] Loading-States ("⏳ Exportiere...")
+- [x] Error-Handling mit Alerts
+- [x] TypeScript-Typsicherheit
 
 **Testing:**
-- [ ] Beide Formate exportieren
-- [ ] Dateien öffnen und Inhalt prüfen
+- [x] Test-Dokumentation erstellt (PHASE_6_TESTING.md)
+- [ ] Postman-Tests durchführen
+- [ ] Browser-Tests durchführen
+- [ ] Browser-Kompatibilität prüfen
 
 **Deliverables:**
-- Export-Funktionalität für JSON und CSV
+- ✅ Export-Funktionalität für JSON und CSV
+- ✅ 2 neue Dateien, 5 geänderte Dateien (~237 Zeilen Code)
+- ✅ Umfassende Test-Anleitung
+- Dokumentation: siehe `PHASE_6_ZUSAMMENFASSUNG.md`
 
 ---
 

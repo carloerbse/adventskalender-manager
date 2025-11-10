@@ -9,6 +9,8 @@ import {
   deleteCalendar,
   isCalendarOwnedByUser,
   shufflePouches,
+  getCalendarWithPouches,
+  convertToCSV,
 } from "../database.ts";
 
 /**
@@ -268,6 +270,78 @@ export async function handleShuffleCalendar(
     console.error("Fehler beim Mischen der Säckchen:", error);
     return new Response(
       JSON.stringify({ error: "Fehler beim Mischen der Säckchen" }),
+      { status: 500, headers: { "Content-Type": "application/json" } }
+    );
+  }
+}
+
+/**
+ * GET /api/calendars/:id/export?format=json|csv
+ * Exportiert einen Kalender als JSON oder CSV
+ */
+export async function handleExportCalendar(
+  req: Request,
+  userId: number,
+  calendarId: number
+): Promise<Response> {
+  try {
+    // Erst prüfen ob Kalender existiert und dem User gehört
+    if (!isCalendarOwnedByUser(calendarId, userId)) {
+      return new Response(
+        JSON.stringify({ error: "Kalender nicht gefunden oder Zugriff verweigert" }),
+        { status: 404, headers: { "Content-Type": "application/json" } }
+      );
+    }
+
+    // Format aus Query-Parameter lesen
+    const url = new URL(req.url);
+    const format = url.searchParams.get("format") || "json";
+
+    if (format !== "json" && format !== "csv") {
+      return new Response(
+        JSON.stringify({ error: "Ungültiges Format. Nutze 'json' oder 'csv'" }),
+        { status: 400, headers: { "Content-Type": "application/json" } }
+      );
+    }
+
+    // Kalenderdaten holen
+    const data = getCalendarWithPouches(calendarId);
+
+    if (!data) {
+      return new Response(
+        JSON.stringify({ error: "Kalender nicht gefunden" }),
+        { status: 404, headers: { "Content-Type": "application/json" } }
+      );
+    }
+
+    // Dateiname generieren (ohne Sonderzeichen)
+    const filename = `${data.calendar.name.replace(/[^a-zA-Z0-9]/g, '_')}_${Date.now()}`;
+
+    if (format === "json") {
+      // JSON-Export
+      return new Response(JSON.stringify(data, null, 2), {
+        status: 200,
+        headers: {
+          "Content-Type": "application/json",
+          "Content-Disposition": `attachment; filename="${filename}.json"`,
+        },
+      });
+    } else {
+      // CSV-Export
+      const csv = convertToCSV(calendarId);
+      
+      return new Response(csv, {
+        status: 200,
+        headers: {
+          "Content-Type": "text/csv; charset=utf-8",
+          "Content-Disposition": `attachment; filename="${filename}.csv"`,
+        },
+      });
+    }
+  } catch (error) {
+    console.error("Fehler beim Exportieren des Kalenders:", error);
+    return new Response(
+      JSON.stringify({ error: "Fehler beim Exportieren des Kalenders" }),
       { status: 500, headers: { "Content-Type": "application/json" } }
     );
   }

@@ -3,8 +3,8 @@
 
 import { DB } from "https://deno.land/x/sqlite@v3.9.1/mod.ts";
 
-// Datenbankpfad
-const DB_PATH = "./server/adventskalender.db";
+// Datenbankpfad (relativ zum server-Verzeichnis)
+const DB_PATH = "./adventskalender.db";
 
 // Datenbank-Instanz
 let db: DB;
@@ -350,4 +350,59 @@ export function shufflePouches(calendarId: number) {
 
   // 5. Aktualisierte Säckchen zurückgeben
   return getPouchesByCalendarId(calendarId);
+}
+
+// ============================================================================
+// EXPORT-FUNKTIONEN
+// ============================================================================
+
+/**
+ * Holt vollständige Kalenderdaten inklusive aller Säckchen für Export
+ */
+export function getCalendarWithPouches(calendarId: number) {
+  const calendar = getCalendarById(calendarId);
+  
+  if (!calendar) {
+    return null;
+  }
+
+  const pouches = getPouchesByCalendarId(calendarId);
+
+  return {
+    calendar,
+    pouches,
+  };
+}
+
+/**
+ * Konvertiert Kalenderdaten in CSV-Format
+ */
+export function convertToCSV(calendarId: number): string {
+  const data = getCalendarWithPouches(calendarId);
+  
+  if (!data) {
+    throw new Error("Kalender nicht gefunden");
+  }
+
+  const { calendar, pouches } = data;
+
+  // CSV-Header
+  let csv = "Kalendername;Beschreibung;Erstellt am\n";
+  csv += `"${calendar.name}";"${calendar.description}";"${new Date(calendar.created_at).toLocaleDateString('de-DE')}"\n`;
+  csv += "\n";
+  
+  // Säckchen-Header
+  csv += "Nummer;Inhalt;Notizen;Gepackt\n";
+  
+  // Säckchen-Daten
+  for (const pouch of pouches) {
+    const packed = pouch.is_packed ? "Ja" : "Nein";
+    // Escape Anführungszeichen in Inhalten
+    const content = pouch.content.replace(/"/g, '""');
+    const notes = pouch.notes.replace(/"/g, '""');
+    
+    csv += `${pouch.number};"${content}";"${notes}";"${packed}"\n`;
+  }
+
+  return csv;
 }

@@ -15,6 +15,7 @@ import {
   handleUpdateCalendar,
   handleDeleteCalendar,
   handleShuffleCalendar,
+  handleExportCalendar,
 } from "./routes/calendars.ts";
 import {
   getPouches,
@@ -173,6 +174,21 @@ serve(async (req: Request) => {
     if (shuffleCalendarMatch && req.method === "POST") {
       const calendarId = parseInt(shuffleCalendarMatch[1]);
       const response = await handleShuffleCalendar(req, user.id, calendarId);
+      const newHeaders = new Headers(response.headers);
+      Object.entries(corsHeaders).forEach(([key, value]) => {
+        newHeaders.set(key, value);
+      });
+      return new Response(response.body, {
+        status: response.status,
+        headers: newHeaders,
+      });
+    }
+
+    // GET /api/calendars/:id/export - Kalender exportieren (JSON oder CSV)
+    const exportCalendarMatch = url.pathname.match(/^\/api\/calendars\/(\d+)\/export$/);
+    if (exportCalendarMatch && req.method === "GET") {
+      const calendarId = parseInt(exportCalendarMatch[1]);
+      const response = await handleExportCalendar(req, user.id, calendarId);
       const newHeaders = new Headers(response.headers);
       Object.entries(corsHeaders).forEach(([key, value]) => {
         newHeaders.set(key, value);

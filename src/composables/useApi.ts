@@ -133,3 +133,50 @@ export async function shuffleCalendar(id: number): Promise<void> {
     throw new Error(error.error || 'Fehler beim Mischen der Säckchen');
   }
 }
+
+/**
+ * Exportiert einen Kalender als JSON oder CSV
+ * Triggert automatisch einen Download im Browser
+ */
+export async function exportCalendar(id: number, format: 'json' | 'csv'): Promise<void> {
+  const response = await fetch(`${API_BASE_URL}/calendars/${id}/export?format=${format}`, {
+    method: 'GET',
+    credentials: 'include',
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.error || 'Fehler beim Exportieren des Kalenders');
+  }
+
+  // Blob aus Response erstellen
+  const blob = await response.blob();
+  
+  // Dateiname aus Content-Disposition Header extrahieren (falls vorhanden)
+  const contentDisposition = response.headers.get('Content-Disposition');
+  let filename = `kalender_export_${Date.now()}.${format}`;
+  
+  if (contentDisposition) {
+    // Versuche zuerst quoted filename zu matchen: filename="..."
+    let filenameMatch = contentDisposition.match(/filename="([^"]+)"/i);
+    if (!filenameMatch) {
+      // Falls nicht quoted, versuche ohne Quotes: filename=...
+      filenameMatch = contentDisposition.match(/filename=([^;]+)/i);
+    }
+    if (filenameMatch && filenameMatch[1]) {
+      filename = filenameMatch[1].trim();
+    }
+  }
+
+  // Download-Link erstellen und triggern
+  const url = window.URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  
+  // Cleanup
+  document.body.removeChild(link);
+  window.URL.revokeObjectURL(url);
+}
