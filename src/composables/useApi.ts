@@ -180,3 +180,94 @@ export async function exportCalendar(id: number, format: 'json' | 'csv'): Promis
   document.body.removeChild(link);
   window.URL.revokeObjectURL(url);
 }
+
+// ============================================================================
+// ADMIN-API-FUNKTIONEN
+// ============================================================================
+
+/**
+ * Holt alle Benutzer (Admin only)
+ */
+export async function getAllUsers(): Promise<any> {
+  const response = await fetch(`${API_BASE_URL}/admin/users`, {
+    method: 'GET',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.error || 'Fehler beim Laden der Benutzer');
+  }
+
+  return await response.json();
+}
+
+/**
+ * Erstellt einen neuen Benutzer (Admin only)
+ */
+export async function createUser(
+  username: string,
+  password: string,
+  role: 'user' | 'admin' = 'user'
+): Promise<any> {
+  const response = await fetch(`${API_BASE_URL}/admin/users`, {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ username, password, role }),
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.error || 'Fehler beim Erstellen des Benutzers');
+  }
+
+  return await response.json();
+}
+
+/**
+ * Löscht einen Benutzer (Admin only)
+ */
+export async function deleteUser(userId: number): Promise<void> {
+  const response = await fetch(`${API_BASE_URL}/admin/users/${userId}`, {
+    method: 'DELETE',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.error || 'Fehler beim Löschen des Benutzers');
+  }
+}
+
+/**
+ * Ändert die Rolle eines Benutzers (Admin only)
+ */
+export async function updateUserRole(
+  userId: number,
+  role: 'user' | 'admin'
+): Promise<any> {
+  const response = await fetch(`${API_BASE_URL}/admin/users/${userId}/role`, {
+    method: 'PATCH',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ role }),
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.error || 'Fehler beim Ändern der Benutzerrolle');
+  }
+
+  return await response.json();
+}

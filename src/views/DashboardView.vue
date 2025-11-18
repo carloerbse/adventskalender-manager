@@ -18,6 +18,13 @@ async function handleLogout() {
       <h1>🎄 Adventskalender-Manager</h1>
       <div class="user-info">
         <span>👤 {{ authStore.user?.username }}</span>
+        <router-link 
+          v-if="authStore.isAdmin" 
+          to="/admin" 
+          class="btn-admin"
+        >
+          👑 Admin
+        </router-link>
         <button @click="handleLogout" class="btn-logout">Abmelden</button>
       </div>
     </header>
@@ -63,6 +70,25 @@ async function handleLogout() {
 
 .user-info span {
   font-weight: 500;
+}
+
+.btn-admin {
+  padding: 0.5rem 1rem;
+  background: rgba(255, 193, 7, 0.2);
+  border: 2px solid #ffc107;
+  color: #ffc107;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.btn-admin:hover {
+  background: rgba(255, 193, 7, 0.3);
+  transform: translateY(-1px);
 }
 
 .btn-logout {

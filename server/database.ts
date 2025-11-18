@@ -406,3 +406,148 @@ export function convertToCSV(calendarId: number): string {
 
   return csv;
 }
+
+// ============================================================================
+// ADMIN / USER-MANAGEMENT-FUNKTIONEN
+// ============================================================================
+
+/**
+ * Holt alle Benutzer (nur für Admins)
+ */
+export function getAllUsers() {
+  const db = getDatabase();
+  
+  const users = db.query(`
+    SELECT u.id, u.username, u.role, u.created_at,
+           COUNT(DISTINCT c.id) as calendar_count
+    FROM users u
+    LEFT JOIN calendars c ON u.id = c.user_id
+    GROUP BY u.id
+    ORDER BY u.created_at DESC
+  `);
+
+  return users.map((row: unknown[]) => ({
+    id: row[0] as number,
+    username: row[1] as string,
+    role: row[2] as string,
+    created_at: row[3] as string,
+    calendar_count: row[4] as number,
+  }));
+}
+
+/**
+ * Holt einen einzelnen Benutzer nach ID
+ */
+export function getUserById(userId: number) {
+  const db = getDatabase();
+  
+  const result = db.query(`
+    SELECT id, username, role, created_at
+    FROM users
+    WHERE id = ?
+  `, [userId]);
+
+  if (result.length === 0) return null;
+
+  const row = result[0];
+  return {
+    id: row[0] as number,
+    username: row[1] as string,
+    role: row[2] as string,
+    created_at: row[3] as string,
+  };
+}
+
+/**
+ * Erstellt einen neuen Benutzer (Admin-Funktion)
+ * @param username - Benutzername
+ * @param passwordHash - Bereits gehashtes Passwort
+ * @param role - Rolle (user oder admin)
+ * @returns User-ID oder null bei Fehler
+ */
+export function createUser(username: string, passwordHash: string, role: string = "user"): number | null {
+  const db = getDatabase();
+  
+  // Prüfen ob Username bereits existiert
+  const exists = db.query(`SELECT id FROM users WHERE username = ?`, [username]);
+  if (exists.length > 0) {
+    console.log(`❌ Username "${username}" existiert bereits`);
+    return null;
+  }
+
+  // Rolle validieren
+  if (role !== "user" && role !== "admin") {
+    console.log(`❌ Ungültige Rolle: ${role}`);
+    return null;
+  }
+
+  // Benutzer erstellen
+  db.query(`
+    INSERT INTO users (username, password_hash, role)
+    VALUES (?, ?, ?)
+  `, [username, passwordHash, role]);
+
+  const result = db.query(`SELECT last_insert_rowid()`);
+  const userId = result[0][0] as number;
+
+  console.log(`✅ Benutzer "${username}" (${role}) erstellt, ID: ${userId}`);
+  
+  return userId;
+}
+
+/**
+ * Löscht einen Benutzer (inkl. aller Kalender und Sessions durch CASCADE)
+ * @param userId - ID des zu löschenden Benutzers
+ * @returns true bei Erfolg, false wenn Benutzer nicht existiert
+ */
+export function deleteUser(userId: number): boolean {
+  const db = getDatabase();
+  
+  // Prüfen ob Benutzer existiert
+  const check = db.query(`SELECT id FROM users WHERE id = ?`, [userId]);
+  
+  if (check.length === 0) {
+    console.log(`❌ Benutzer ${userId} existiert nicht`);
+    return false;
+  }
+
+  // Benutzer löschen (Kalender und Sessions werden durch CASCADE gelöscht)
+  db.query(`DELETE FROM users WHERE id = ?`, [userId]);
+
+  console.log(`✅ Benutzer ${userId} gelöscht (inkl. Kalender und Sessions)`);
+  return true;
+}
+
+/**
+ * Ändert die Rolle eines Benutzers
+ * @param userId - ID des Benutzers
+ * @param newRole - Neue Rolle (user oder admin)
+ * @returns true bei Erfolg, false bei Fehler
+ */
+export function updateUserRole(userId: number, newRole: string): boolean {
+  const db = getDatabase();
+  
+  // Rolle validieren
+  if (newRole !== "user" && newRole !== "admin") {
+    console.log(`❌ Ungültige Rolle: ${newRole}`);
+    return false;
+  }
+
+  // Prüfen ob Benutzer existiert
+  const check = db.query(`SELECT id FROM users WHERE id = ?`, [userId]);
+  
+  if (check.length === 0) {
+    console.log(`❌ Benutzer ${userId} existiert nicht`);
+    return false;
+  }
+
+  // Rolle aktualisieren
+  db.query(`
+    UPDATE users
+    SET role = ?
+    WHERE id = ?
+  `, [newRole, userId]);
+
+  console.log(`✅ Rolle von Benutzer ${userId} geändert zu: ${newRole}`);
+  return true;
+}

@@ -22,6 +22,7 @@ import {
   updatePouch,
   togglePouchPacked,
 } from "./routes/pouches.ts";
+import { handleAdminRoutes } from "./routes/admin.ts";
 
 const PORT = 8000;
 
@@ -81,6 +82,23 @@ serve(async (req: Request) => {
 
   if (url.pathname === "/api/auth/session" && req.method === "GET") {
     return handleSessionCheck(req, corsHeaders);
+  }
+
+  // Admin-Endpoints (erfordern Admin-Rechte)
+  if (url.pathname.startsWith("/api/admin")) {
+    const response = await handleAdminRoutes(req, url.pathname);
+    
+    if (response) {
+      // CORS-Headers hinzufügen
+      const newHeaders = new Headers(response.headers);
+      Object.entries(corsHeaders).forEach(([key, value]) => {
+        newHeaders.set(key, value);
+      });
+      return new Response(response.body, {
+        status: response.status,
+        headers: newHeaders,
+      });
+    }
   }
 
   // Kalender-Endpoints (alle erfordern Authentifizierung)

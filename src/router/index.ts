@@ -72,8 +72,16 @@ const routes: RouteRecordRaw[] = [
       requiresAuth: true
     }
   },
-  // Weitere Routen werden in späteren Phasen hinzugefügt:
-  // - /admin (Admin-Panel)
+  {
+    path: '/admin',
+    name: 'admin',
+    component: () => import('../views/AdminDashboardView.vue'),
+    meta: {
+      title: 'Admin-Dashboard - Adventskalender-Manager',
+      requiresAuth: true,
+      requiresAdmin: true
+    }
+  }
 ]
 
 const router = createRouter({

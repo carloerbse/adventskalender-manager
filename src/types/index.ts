@@ -9,6 +9,7 @@ export interface User {
   username: string;
   role: 'user' | 'admin';
   created_at: string;
+  calendar_count?: number; // Für Admin-Übersicht
 }
 
 /**

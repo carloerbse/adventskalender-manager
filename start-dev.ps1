@@ -6,7 +6,7 @@ Write-Host ""
 
 # Backend in neuem Terminal starten
 Write-Host "Starte Backend-Server (Deno)..." -ForegroundColor Cyan
-$backendCmd = "cd '$PWD'; Write-Host 'BACKEND SERVER' -ForegroundColor Green; deno run --allow-net --allow-read --allow-write server/server.ts"
+$backendCmd = "cd '$PWD\server'; Write-Host 'BACKEND SERVER' -ForegroundColor Green; deno run --allow-net --allow-read --allow-write server.ts"
 Start-Process powershell -ArgumentList "-NoExit", "-Command", $backendCmd
 
 # Kurz warten damit Backend zuerst startet
