@@ -134,7 +134,7 @@ async function handleChangeRole(userId: number, newRole: 'user' | 'admin') {
 .admin-dashboard {
   min-height: 100vh;
   padding: 2rem 1rem;
-  background: var(--color-background);
+  background: var(--background);
 }
 
 .container {
@@ -149,13 +149,15 @@ async function handleChangeRole(userId: number, newRole: 'user' | 'admin') {
 .page-header h1 {
   margin: 0;
   font-size: 2rem;
-  color: var(--color-heading);
+  color: var(--text);
+  font-weight: 800;
 }
 
 .subtitle {
   margin: 0.5rem 0 0 0;
-  color: var(--color-text-muted);
+  color: var(--text);
   font-size: 1.125rem;
+  font-weight: 500;
 }
 
 .alert {
@@ -166,15 +168,15 @@ async function handleChangeRole(userId: number, newRole: 'user' | 'admin') {
 }
 
 .alert-success {
-  background: rgba(65, 184, 131, 0.1);
-  border: 2px solid #41b883;
-  color: #41b883;
+  background: rgba(16, 46, 25, 0.1);
+  border: 2px solid #102E19;
+  color: #102E19;
 }
 
 .alert-error {
-  background: rgba(255, 68, 68, 0.1);
-  border: 2px solid #ff4444;
-  color: #ff4444;
+  background: rgba(166, 11, 8, 0.1);
+  border: 2px solid #A60B08;
+  color: #A60B08;
 }
 
 .create-section {
@@ -183,7 +185,7 @@ async function handleChangeRole(userId: number, newRole: 'user' | 'admin') {
 
 .btn-create {
   padding: 0.875rem 1.75rem;
-  background: var(--vt-c-blue-500);
+  background: #A60B08;
   color: white;
   border: none;
   border-radius: 8px;
@@ -194,9 +196,9 @@ async function handleChangeRole(userId: number, newRole: 'user' | 'admin') {
 }
 
 .btn-create:hover {
-  background: var(--vt-c-blue-600);
+  background: #5E0D01;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+  box-shadow: 0 4px 12px rgba(166, 11, 8, 0.3);
 }
 
 .back-section {
@@ -207,18 +209,18 @@ async function handleChangeRole(userId: number, newRole: 'user' | 'admin') {
 .btn-back {
   display: inline-block;
   padding: 0.75rem 1.5rem;
-  background: var(--color-background-mute);
-  color: var(--color-text);
-  border: 2px solid var(--color-border);
+  background: var(--surface);
+  color: var(--text);
+  border: 2px solid var(--border);
   border-radius: 8px;
   text-decoration: none;
-  font-weight: 500;
+  font-weight: 600;
   transition: all 0.3s;
 }
 
 .btn-back:hover {
-  background: var(--color-background-soft);
-  border-color: var(--color-border-hover);
+  background: var(--surface-hover);
+  border-color: var(--christmas-green);
   transform: translateY(-1px);
 }
 

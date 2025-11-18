@@ -81,8 +81,9 @@ async function handleSubmit() {
 
 .login-form h2 {
   text-align: center;
-  color: #667eea;
+  color: #A60B08;
   margin-bottom: 1.5rem;
+  font-weight: 800;
 }
 
 .form-group {
@@ -92,35 +93,38 @@ async function handleSubmit() {
 .form-group label {
   display: block;
   margin-bottom: 0.5rem;
-  font-weight: 500;
-  color: #333;
+  font-weight: 700;
+  color: var(--text);
 }
 
 .form-group input {
   width: 100%;
   padding: 0.75rem;
-  border: 2px solid #e0e0e0;
+  border: 2px solid var(--border);
   border-radius: 4px;
   font-size: 1rem;
   transition: border-color 0.3s;
+  background: white;
+  font-weight: 500;
+  color: var(--text);
 }
 
 .form-group input:focus {
   outline: none;
-  border-color: #667eea;
+  border-color: #A60B08;
 }
 
 .form-group input:disabled {
-  background: #f5f5f5;
+  background: #CFCABF;
   cursor: not-allowed;
 }
 
 .error-message {
   padding: 0.75rem;
   background: #fee;
-  border: 1px solid #fcc;
+  border: 1px solid #A60B08;
   border-radius: 4px;
-  color: #c00;
+  color: #5E0D01;
   margin-bottom: 1rem;
   text-align: center;
 }
@@ -128,7 +132,7 @@ async function handleSubmit() {
 .btn-primary {
   width: 100%;
   padding: 0.75rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #A60B08 0%, #5E0D01 100%);
   color: white;
   border: none;
   border-radius: 4px;
@@ -140,6 +144,7 @@ async function handleSubmit() {
 
 .btn-primary:hover:not(:disabled) {
   transform: translateY(-2px);
+  background: linear-gradient(135deg, #5E0D01 0%, #A60B08 100%);
 }
 
 .btn-primary:disabled {
@@ -150,16 +155,17 @@ async function handleSubmit() {
 .form-footer {
   text-align: center;
   margin-top: 1.5rem;
-  color: #666;
+  color: #76584C;
 }
 
 .form-footer a {
-  color: #667eea;
+  color: #102E19;
   text-decoration: none;
   font-weight: 600;
 }
 
 .form-footer a:hover {
   text-decoration: underline;
+  color: #0a1f11;
 }
 </style>

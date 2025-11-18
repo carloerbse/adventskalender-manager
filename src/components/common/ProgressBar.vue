@@ -57,8 +57,8 @@ const message = computed(() => {
 
 <style scoped>
 .progress-bar-container {
-  background-color: var(--color-background-soft);
-  border: 2px solid var(--color-border);
+  background-color: var(--surface);
+  border: 2px solid var(--border);
   border-radius: 12px;
   padding: 1.5rem;
   margin-bottom: 2rem;
@@ -79,28 +79,28 @@ const message = computed(() => {
 
 .progress-label {
   font-size: 1rem;
-  font-weight: 600;
-  color: var(--color-text);
+  font-weight: 700;
+  color: var(--text);
 }
 
 .progress-count {
   font-size: 1.1rem;
-  font-weight: 700;
-  color: #42b983;
+  font-weight: 800;
+  color: #A60B08;
 }
 
 .progress-percentage {
   font-size: 1.5rem;
-  font-weight: 700;
-  color: #42b983;
+  font-weight: 800;
+  color: #A60B08;
 }
 
 /* Progress Bar */
 .progress-bar {
   width: 100%;
   height: 24px;
-  background-color: var(--color-background);
-  border: 2px solid var(--color-border);
+  background-color: var(--background);
+  border: 2px solid var(--border);
   border-radius: 12px;
   overflow: hidden;
   position: relative;
@@ -109,7 +109,7 @@ const message = computed(() => {
 
 .progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(90deg, #A60B08 0%, #5E0D01 100%);
   border-radius: 10px;
   transition: width 0.5s ease, background 0.3s ease;
   position: relative;
@@ -117,31 +117,31 @@ const message = computed(() => {
 
 /* Progress Colors */
 .progress-fill.start {
-  background: linear-gradient(90deg, #f093fb 0%, #f5576c 100%);
+  background: linear-gradient(90deg, #C81915 0%, #A60B08 100%);
 }
 
 .progress-fill.low {
-  background: linear-gradient(90deg, #ffa500 0%, #ff6b6b 100%);
+  background: linear-gradient(90deg, #A60B08 0%, #76584C 100%);
 }
 
 .progress-fill.medium {
-  background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+  background: linear-gradient(90deg, #76584C 0%, #102E19 100%);
 }
 
 .progress-fill.high {
-  background: linear-gradient(90deg, #43e97b 0%, #38f9d7 100%);
+  background: linear-gradient(90deg, #102E19 0%, #1a4525 100%);
 }
 
 .progress-fill.complete {
-  background: linear-gradient(90deg, #42b983 0%, #2d8659 100%);
+  background: linear-gradient(90deg, #102E19 0%, #0a1f11 100%);
 }
 
 /* Progress Message */
 .progress-message {
   text-align: center;
   font-size: 0.95rem;
-  font-weight: 500;
-  color: var(--color-text-muted);
+  font-weight: 600;
+  color: var(--text);
   margin: 0;
 }
 

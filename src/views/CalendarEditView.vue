@@ -34,7 +34,7 @@ function handleBack() {
 <style scoped>
 .calendar-edit-view {
   min-height: 100vh;
-  background: #f5f5f5;
+  background: var(--background);
   padding: 2rem;
 }
 
@@ -45,17 +45,20 @@ function handleBack() {
 
 .btn-back {
   padding: 0.75rem 1.5rem;
-  background: white;
-  border: 1px solid #ddd;
+  background: var(--surface);
+  border: 2px solid var(--border);
   border-radius: 6px;
   cursor: pointer;
   font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
   margin-bottom: 2rem;
   transition: all 0.2s;
 }
 
 .btn-back:hover {
-  background: #f5f5f5;
+  background: var(--surface-hover);
+  border-color: var(--christmas-green);
 }
 
 @media (max-width: 768px) {

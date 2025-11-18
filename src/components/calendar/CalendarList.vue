@@ -98,34 +98,37 @@ async function handleDeleteCalendar(id: number) {
 
 .list-header h2 {
   margin: 0;
-  color: var(--text-color);
+  color: var(--text);
+  font-weight: 700;
 }
 
 .btn {
   padding: 0.75rem 1.5rem;
-  border: 1px solid var(--border-color);
+  border: 2px solid var(--border);
   border-radius: 6px;
-  background: var(--card-bg);
-  color: var(--text-color);
+  background: var(--surface);
+  color: var(--text);
   cursor: pointer;
   font-size: 1rem;
+  font-weight: 600;
   transition: all 0.2s;
 }
 
 .btn:hover {
-  background: var(--hover-bg);
+  background: var(--surface-hover);
   transform: translateY(-1px);
+  border-color: var(--christmas-green);
 }
 
 .btn-primary {
-  background: #2196f3;
+  background: #A60B08;
   color: white;
-  border-color: #2196f3;
+  border-color: #A60B08;
 }
 
 .btn-primary:hover {
-  background: #1976d2;
-  border-color: #1976d2;
+  background: #5E0D01;
+  border-color: #5E0D01;
 }
 
 .loading,
@@ -135,7 +138,7 @@ async function handleDeleteCalendar(id: number) {
 }
 
 .error p {
-  color: #ff5252;
+  color: #A60B08;
   margin-bottom: 1rem;
 }
 
@@ -150,13 +153,15 @@ async function handleDeleteCalendar(id: number) {
 }
 
 .empty-state h3 {
-  color: var(--text-color);
+  color: var(--text);
   margin-bottom: 1rem;
+  font-weight: 700;
 }
 
 .empty-state p {
-  color: var(--text-secondary);
+  color: var(--text);
   margin-bottom: 2rem;
+  font-weight: 500;
 }
 
 .calendar-grid {

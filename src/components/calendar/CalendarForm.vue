@@ -154,23 +154,24 @@ function handleCancel() {
 
 .calendar-form-container h2 {
   margin-bottom: 2rem;
-  color: var(--text-color);
+  color: var(--text);
+  font-weight: 800;
 }
 
 .calendar-form {
-  background: var(--card-bg);
-  border: 1px solid var(--border-color);
+  background: var(--surface);
+  border: 2px solid var(--border);
   border-radius: 8px;
   padding: 2rem;
 }
 
 .error-message {
-  background: #ffebee;
-  color: #c62828;
+  background: #fee;
+  color: #5E0D01;
   padding: 1rem;
   border-radius: 4px;
   margin-bottom: 1.5rem;
-  border-left: 4px solid #c62828;
+  border-left: 4px solid #A60B08;
 }
 
 .form-group {
@@ -180,36 +181,37 @@ function handleCancel() {
 .form-group label {
   display: block;
   margin-bottom: 0.5rem;
-  color: var(--text-color);
-  font-weight: 500;
+  color: var(--text);
+  font-weight: 700;
 }
 
 .form-group input,
 .form-group textarea {
   width: 100%;
   padding: 0.75rem;
-  border: 1px solid var(--border-color);
+  border: 2px solid var(--border);
   border-radius: 4px;
-  background: var(--card-bg);
-  color: var(--text-color);
+  background: var(--background);
+  color: var(--text);
   font-size: 1rem;
   font-family: inherit;
   transition: border-color 0.2s;
+  font-weight: 500;
 }
 
 .form-group input:focus,
 .form-group textarea:focus {
   outline: none;
-  border-color: #2196f3;
+  border-color: #A60B08;
 }
 
 .input-error {
-  border-color: #c62828 !important;
+  border-color: #A60B08 !important;
 }
 
 .field-error {
   display: block;
-  color: #c62828;
+  color: #A60B08;
   font-size: 0.85rem;
   margin-top: 0.25rem;
 }
@@ -235,12 +237,13 @@ function handleCancel() {
 
 .btn {
   padding: 0.75rem 1.5rem;
-  border: 1px solid var(--border-color);
+  border: 2px solid var(--border);
   border-radius: 6px;
-  background: var(--card-bg);
-  color: var(--text-color);
+  background: var(--surface);
+  color: var(--text);
   cursor: pointer;
   font-size: 1rem;
+  font-weight: 600;
   transition: all 0.2s;
 }
 
@@ -254,23 +257,24 @@ function handleCancel() {
 }
 
 .btn-secondary {
-  background: var(--card-bg);
-  color: var(--text-color);
+  background: var(--surface);
+  color: var(--text);
 }
 
 .btn-secondary:hover:not(:disabled) {
-  background: var(--hover-bg);
+  background: var(--surface-hover);
+  border-color: var(--christmas-green);
 }
 
 .btn-primary {
-  background: #2196f3;
+  background: #A60B08;
   color: white;
-  border-color: #2196f3;
+  border-color: #A60B08;
 }
 
 .btn-primary:hover:not(:disabled) {
-  background: #1976d2;
-  border-color: #1976d2;
+  background: #5E0D01;
+  border-color: #5E0D01;
 }
 
 /* Responsive */

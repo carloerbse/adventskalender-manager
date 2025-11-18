@@ -124,8 +124,8 @@ function togglePacked() {
 
 <style scoped>
 .pouch-item {
-  background-color: var(--color-background-soft);
-  border: 2px solid var(--color-border);
+  background-color: var(--background);
+  border: 2px solid var(--border);
   border-radius: 12px;
   padding: 1.2rem;
   position: relative;
@@ -133,17 +133,17 @@ function togglePacked() {
 }
 
 .pouch-item:hover {
-  border-color: #42b983;
-  box-shadow: 0 4px 12px rgba(66, 185, 131, 0.1);
+  border-color: #A60B08;
+  box-shadow: 0 4px 12px rgba(166, 11, 8, 0.15);
 }
 
 .pouch-item.packed {
-  background-color: rgba(66, 185, 131, 0.05);
-  border-color: #42b983;
+  background-color: rgba(16, 46, 25, 0.05);
+  border-color: #102E19;
 }
 
 .pouch-item.editing {
-  border-color: #ffa500;
+  border-color: #76584C;
 }
 
 /* Säckchen Nummer */
@@ -151,7 +151,7 @@ function togglePacked() {
   position: absolute;
   top: -10px;
   right: 12px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #A60B08 0%, #5E0D01 100%);
   color: white;
   width: 36px;
   height: 36px;
@@ -161,11 +161,11 @@ function togglePacked() {
   justify-content: center;
   font-weight: bold;
   font-size: 1rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .pouch-item.packed .pouch-number {
-  background: linear-gradient(135deg, #42b983 0%, #2d8659 100%);
+  background: linear-gradient(135deg, #102E19 0%, #1a4525 100%);
 }
 
 /* Content */
@@ -186,8 +186,8 @@ function togglePacked() {
 .content-section label,
 .notes-section label {
   font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--color-text-muted);
+  font-weight: 700;
+  color: var(--text-secondary);
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
@@ -196,13 +196,15 @@ function togglePacked() {
 .notes-text {
   font-size: 0.95rem;
   line-height: 1.5;
-  color: var(--color-text);
+  color: var(--text);
   word-wrap: break-word;
+  font-weight: 500;
 }
 
 .content-text.empty {
-  color: var(--color-text-muted);
+  color: var(--text-secondary);
   font-style: italic;
+  font-weight: 400;
 }
 
 /* Actions */
@@ -216,28 +218,38 @@ function togglePacked() {
 .btn-toggle {
   flex: 1;
   padding: 0.7rem 1rem;
-  background-color: #f0f0f0;
-  border: 2px solid #d0d0d0;
+  background-color: var(--surface);
+  border: 2px solid #A60B08;
   border-radius: 8px;
   font-size: 0.9rem;
-  font-weight: 500;
+  font-weight: 700;
   cursor: pointer;
   transition: all 0.2s;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
+  color: #A60B08;
+  box-shadow: 0 2px 4px rgba(166, 11, 8, 0.15);
 }
 
 .btn-toggle:hover {
-  background-color: #e0e0e0;
-  border-color: #42b983;
+  background-color: #fff5f5;
+  border-color: #5E0D01;
+  color: #5E0D01;
+  box-shadow: 0 2px 8px rgba(166, 11, 8, 0.2);
 }
 
 .btn-toggle.packed {
-  background-color: #42b983;
-  border-color: #42b983;
+  background-color: #102E19;
+  border-color: #102E19;
   color: white;
+  box-shadow: 0 2px 4px rgba(16, 46, 25, 0.2);
+}
+
+.btn-toggle.packed:hover {
+  background-color: #1a4525;
+  border-color: #1a4525;
 }
 
 .checkbox {
@@ -255,7 +267,7 @@ function togglePacked() {
 /* Edit Button */
 .btn-edit {
   padding: 0.7rem 1rem;
-  background-color: #ffa500;
+  background-color: #76584C;
   color: white;
   border: none;
   border-radius: 8px;
@@ -266,7 +278,7 @@ function togglePacked() {
 }
 
 .btn-edit:hover {
-  background-color: #ff8c00;
+  background-color: #5d4439;
 }
 
 /* Form Fields */
@@ -278,8 +290,8 @@ function togglePacked() {
 
 .form-group label {
   font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--color-text);
+  font-weight: 700;
+  color: var(--text);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -287,25 +299,26 @@ function togglePacked() {
 
 .char-count {
   font-size: 0.8rem;
-  color: var(--color-text-muted);
-  font-weight: normal;
+  color: var(--text-secondary);
+  font-weight: 600;
 }
 
 .form-group textarea {
   padding: 0.7rem;
-  border: 2px solid var(--color-border);
+  border: 2px solid var(--border);
   border-radius: 6px;
   font-size: 0.95rem;
   font-family: inherit;
   resize: vertical;
-  background-color: var(--color-background);
-  color: var(--color-text);
+  background-color: var(--background);
+  color: var(--text);
   transition: border-color 0.2s;
+  font-weight: 500;
 }
 
 .form-group textarea:focus {
   outline: none;
-  border-color: #42b983;
+  border-color: #102E19;
 }
 
 /* Checkbox Group */
@@ -326,7 +339,7 @@ function togglePacked() {
 .btn-save {
   flex: 1;
   padding: 0.7rem 1rem;
-  background-color: #42b983;
+  background-color: #102E19;
   color: white;
   border: none;
   border-radius: 8px;
@@ -337,12 +350,12 @@ function togglePacked() {
 }
 
 .btn-save:hover {
-  background-color: #2d8659;
+  background-color: #1a4525;
 }
 
 .btn-cancel {
   padding: 0.7rem 1rem;
-  background-color: #dc3545;
+  background-color: #A60B08;
   color: white;
   border: none;
   border-radius: 8px;
@@ -353,7 +366,7 @@ function togglePacked() {
 }
 
 .btn-cancel:hover {
-  background-color: #c82333;
+  background-color: #5E0D01;
 }
 
 /* Responsive */

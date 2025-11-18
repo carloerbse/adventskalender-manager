@@ -134,16 +134,17 @@ function isCurrentUser(userId: number): boolean {
 
 <style scoped>
 .user-list {
-  background: var(--color-background-soft);
-  border: 1px solid var(--color-border);
+  background: var(--surface);
+  border: 2px solid var(--border);
   border-radius: 8px;
   padding: 1.5rem;
 }
 
 .user-list h3 {
   margin: 0 0 1.5rem 0;
-  color: var(--color-heading);
+  color: var(--text);
   font-size: 1.25rem;
+  font-weight: 700;
 }
 
 .loading,
@@ -163,21 +164,22 @@ table {
 }
 
 thead {
-  background: var(--color-background-mute);
+  background: var(--background);
 }
 
 th {
   padding: 0.75rem;
   text-align: left;
-  font-weight: 600;
-  color: var(--color-heading);
-  border-bottom: 2px solid var(--color-border);
+  font-weight: 700;
+  color: var(--text);
+  border-bottom: 2px solid var(--border);
 }
 
 td {
   padding: 0.75rem;
-  border-bottom: 1px solid var(--color-border);
-  color: var(--color-text);
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+  font-weight: 500;
 }
 
 tbody tr {
@@ -185,11 +187,11 @@ tbody tr {
 }
 
 tbody tr:hover {
-  background: var(--color-background-mute);
+  background: var(--background);
 }
 
 tbody tr.current-user {
-  background: rgba(65, 184, 131, 0.1);
+  background: var(--surface-hover);
 }
 
 .badge {
@@ -201,21 +203,21 @@ tbody tr.current-user {
 }
 
 .badge-admin {
-  background: rgba(255, 193, 7, 0.2);
-  color: #ff9800;
+  background: rgba(166, 11, 8, 0.15);
+  color: #A60B08;
 }
 
 .badge-user {
-  background: rgba(65, 184, 131, 0.2);
-  color: #41b883;
+  background: rgba(16, 46, 25, 0.15);
+  color: #102E19;
 }
 
 .badge-current {
   display: inline-block;
   margin-left: 0.5rem;
   padding: 0.125rem 0.5rem;
-  background: rgba(65, 184, 131, 0.2);
-  color: #41b883;
+  background: rgba(118, 88, 76, 0.2);
+  color: #76584C;
   border-radius: 8px;
   font-size: 0.75rem;
   font-weight: 600;
@@ -243,7 +245,7 @@ tbody tr.current-user {
 }
 
 .btn-delete:hover {
-  background: rgba(255, 68, 68, 0.1);
+  background: rgba(166, 11, 8, 0.15);
 }
 
 .text-muted {

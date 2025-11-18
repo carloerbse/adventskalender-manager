@@ -22,9 +22,9 @@ const progressPercentage = computed(() => {
 
 const progressColor = computed(() => {
   const percentage = progressPercentage.value;
-  if (percentage === 100) return '#4caf50'; // Grün
-  if (percentage >= 50) return '#ff9800'; // Orange
-  return '#2196f3'; // Blau
+  if (percentage === 100) return '#102E19'; // Weihnachtsgrün
+  if (percentage >= 50) return '#A60B08'; // Weihnachtsrot
+  return '#76584C'; // Braun
 });
 
 // Methoden
@@ -77,7 +77,7 @@ function handleDelete() {
 <style scoped>
 .calendar-card {
   background: var(--card-bg);
-  border: 1px solid var(--border-color);
+  border: 2px solid var(--border-color);
   border-radius: 8px;
   padding: 1.5rem;
   transition: transform 0.2s, box-shadow 0.2s;
@@ -86,8 +86,8 @@ function handleDelete() {
 
 .calendar-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  border-color: #42b983;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border-color: #A60B08;
 }
 
 .calendar-header {
@@ -101,6 +101,7 @@ function handleDelete() {
   margin: 0;
   color: var(--text-color);
   font-size: 1.25rem;
+  font-weight: 700;
 }
 
 .calendar-actions {
@@ -124,15 +125,16 @@ function handleDelete() {
 }
 
 .btn-danger:hover {
-  background: #ff5252;
-  border-color: #ff5252;
+  background: #A60B08;
+  border-color: #A60B08;
 }
 
 .calendar-description {
-  color: var(--text-secondary);
+  color: var(--text);
   margin-bottom: 1rem;
   font-size: 0.95rem;
   line-height: 1.4;
+  font-weight: 500;
 }
 
 .calendar-progress {
@@ -145,6 +147,7 @@ function handleDelete() {
   align-items: center;
   margin-bottom: 0.5rem;
   font-size: 0.9rem;
+  font-weight: 600;
 }
 
 .progress-percentage {
@@ -178,22 +181,11 @@ function handleDelete() {
 
 /* CSS-Variablen für Theming */
 :root {
-  --card-bg: #ffffff;
-  --border-color: #e0e0e0;
-  --text-color: #213547;
-  --text-secondary: #666;
-  --hover-bg: #f5f5f5;
-  --progress-bg: #e0e0e0;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --card-bg: #1a1a1a;
-    --border-color: #333;
-    --text-color: #ffffff;
-    --text-secondary: #aaa;
-    --hover-bg: #2a2a2a;
-    --progress-bg: #333;
-  }
+  --card-bg: var(--surface);
+  --border-color: var(--border);
+  --text-color: var(--text);
+  --text-secondary: var(--text-secondary);
+  --hover-bg: var(--surface-hover);
+  --progress-bg: #e0dbd5;
 }
 </style>

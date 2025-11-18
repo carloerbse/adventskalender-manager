@@ -16,7 +16,7 @@ import LoginForm from '../components/auth/LoginForm.vue'
 <style scoped>
 .login-view {
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #A60B08 0%, #102E19 100%);
   padding: 2rem;
   display: flex;
   flex-direction: column;
@@ -33,12 +33,16 @@ import LoginForm from '../components/auth/LoginForm.vue'
 .hero-section h1 {
   font-size: 2.5rem;
   margin-bottom: 0.5rem;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  color: white;
+  font-weight: 800;
 }
 
 .hero-section p {
   font-size: 1.1rem;
-  opacity: 0.9;
+  opacity: 0.95;
+  color: #CFCABF;
+  font-weight: 600;
 }
 
 @media (max-width: 600px) {

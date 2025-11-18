@@ -144,8 +144,8 @@ function handleCancel() {
 
 <style scoped>
 .user-form {
-  background: var(--color-background-soft);
-  border: 1px solid var(--color-border);
+  background: var(--surface);
+  border: 2px solid var(--border);
   border-radius: 8px;
   padding: 1.5rem;
   margin-bottom: 2rem;
@@ -153,8 +153,9 @@ function handleCancel() {
 
 .user-form h3 {
   margin: 0 0 1.5rem 0;
-  color: var(--color-heading);
+  color: var(--text);
   font-size: 1.25rem;
+  font-weight: 700;
 }
 
 .form-group {
@@ -164,37 +165,38 @@ function handleCancel() {
 .form-group label {
   display: block;
   margin-bottom: 0.5rem;
-  font-weight: 500;
-  color: var(--color-text);
+  font-weight: 700;
+  color: var(--text);
 }
 
 .form-group input,
 .form-group select {
   width: 100%;
   padding: 0.75rem;
-  border: 2px solid var(--color-border);
+  border: 2px solid var(--border);
   border-radius: 6px;
   font-size: 1rem;
-  background: var(--color-background);
-  color: var(--color-text);
+  background: var(--background);
+  color: var(--text);
   transition: border-color 0.3s;
+  font-weight: 500;
 }
 
 .form-group input:focus,
 .form-group select:focus {
   outline: none;
-  border-color: var(--vt-c-blue-500);
+  border-color: #A60B08;
 }
 
 .form-group input.error {
-  border-color: #ff4444;
+  border-color: #A60B08;
 }
 
 .error-message {
   display: block;
   margin-top: 0.25rem;
   font-size: 0.875rem;
-  color: #ff4444;
+  color: #A60B08;
 }
 
 .help-text {
@@ -223,23 +225,24 @@ function handleCancel() {
 }
 
 .btn-primary {
-  background: #646cff;
+  background: #A60B08;
   color: white;
 }
 
 .btn-primary:hover {
-  background: #535bf2;
+  background: #5E0D01;
   transform: translateY(-1px);
 }
 
 .btn-secondary {
-  background: var(--color-background-mute);
-  color: var(--color-text);
-  border: 2px solid var(--color-border);
+  background: var(--surface);
+  color: var(--text);
+  border: 2px solid var(--border);
+  font-weight: 600;
 }
 
 .btn-secondary:hover {
-  background: var(--color-background-soft);
-  border-color: var(--color-border-hover);
+  background: var(--surface-hover);
+  border-color: var(--christmas-green);
 }
 </style>

@@ -76,14 +76,15 @@ function handleToggle(pouchId: number) {
 
 .list-header h2 {
   font-size: 1.8rem;
-  font-weight: 600;
-  color: var(--color-heading);
+  font-weight: 700;
+  color: var(--text);
   margin-bottom: 0.5rem;
 }
 
 .subtitle {
-  color: var(--color-text-muted);
+  color: var(--text);
   font-size: 0.95rem;
+  font-weight: 500;
 }
 
 /* Loading State */
@@ -100,7 +101,7 @@ function handleToggle(pouchId: number) {
   width: 40px;
   height: 40px;
   border: 4px solid rgba(0, 0, 0, 0.1);
-  border-top-color: #42b983;
+  border-top-color: #A60B08;
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin-bottom: 1rem;
@@ -125,7 +126,7 @@ function handleToggle(pouchId: number) {
 }
 
 .error-state p {
-  color: #d32f2f;
+  color: #A60B08;
   font-size: 1rem;
 }
 
@@ -181,7 +182,7 @@ function handleToggle(pouchId: number) {
 /* Buttons */
 .btn-secondary {
   padding: 0.6rem 1.2rem;
-  background-color: #6c757d;
+  background-color: #76584C;
   color: white;
   border: none;
   border-radius: 6px;
@@ -191,6 +192,6 @@ function handleToggle(pouchId: number) {
 }
 
 .btn-secondary:hover {
-  background-color: #5a6268;
+  background-color: #5d4439;
 }
 </style>

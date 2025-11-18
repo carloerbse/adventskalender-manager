@@ -46,20 +46,34 @@ async function handleDelete() {
 }
 
 async function handleUpdatePouch(pouchId: number, content: string, notes: string, is_packed: boolean) {
+  // Aktuelle Scroll-Position speichern
+  const scrollPosition = window.scrollY;
+  
   try {
     await pouchStore.updatePouch(pouchId, content, notes, is_packed);
     // Kalender neu laden um Fortschritt zu aktualisieren
     await calendarStore.loadCalendar(calendarId.value);
+    
+    // Scroll-Position wiederherstellen nach dem nächsten DOM-Update
+    await new Promise(resolve => setTimeout(resolve, 0));
+    window.scrollTo(0, scrollPosition);
   } catch (error) {
     alert('Fehler beim Aktualisieren des Säckchens');
   }
 }
 
 async function handleTogglePouch(pouchId: number) {
+  // Aktuelle Scroll-Position speichern
+  const scrollPosition = window.scrollY;
+  
   try {
     await pouchStore.togglePacked(pouchId);
     // Kalender neu laden um Fortschritt zu aktualisieren
     await calendarStore.loadCalendar(calendarId.value);
+    
+    // Scroll-Position wiederherstellen nach dem nächsten DOM-Update
+    await new Promise(resolve => setTimeout(resolve, 0));
+    window.scrollTo(0, scrollPosition);
   } catch (error) {
     alert('Fehler beim Umschalten des Status');
   }
@@ -222,7 +236,7 @@ const progress = computed(() => pouchStore.getProgress());
 <style scoped>
 .calendar-detail {
   min-height: 100vh;
-  background: #f5f5f5;
+  background: var(--background);
   padding: 2rem;
 }
 
@@ -235,7 +249,7 @@ const progress = computed(() => pouchStore.getProgress());
 }
 
 .error p {
-  color: #ff5252;
+  color: #A60B08;
   margin-bottom: 1rem;
   font-size: 1.2rem;
 }
@@ -254,16 +268,19 @@ const progress = computed(() => pouchStore.getProgress());
 
 .btn-back {
   padding: 0.75rem 1.5rem;
-  background: white;
-  border: 1px solid #ddd;
+  background: var(--surface);
+  border: 2px solid var(--border);
   border-radius: 6px;
   cursor: pointer;
   font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
   transition: all 0.2s;
 }
 
 .btn-back:hover {
-  background: #f5f5f5;
+  background: var(--surface-hover);
+  border-color: var(--christmas-green);
 }
 
 .calendar-actions {
@@ -273,46 +290,49 @@ const progress = computed(() => pouchStore.getProgress());
 
 .btn {
   padding: 0.75rem 1.5rem;
-  border: 1px solid #ddd;
+  border: 2px solid var(--border);
   border-radius: 6px;
-  background: white;
+  background: var(--surface);
   cursor: pointer;
   font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
   transition: all 0.2s;
 }
 
 .btn:hover {
   transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
 }
 
 .btn-secondary {
-  background: #2196f3;
+  background: #76584C;
   color: white;
-  border-color: #2196f3;
+  border-color: #76584C;
 }
 
 .btn-secondary:hover {
-  background: #1976d2;
+  background: #5d4439;
 }
 
 .btn-danger {
-  background: #ff5252;
+  background: #A60B08;
   color: white;
-  border-color: #ff5252;
+  border-color: #A60B08;
 }
 
 .btn-danger:hover {
-  background: #d32f2f;
+  background: #5E0D01;
 }
 
 .btn-shuffle {
-  background: #ff9800;
+  background: #76584C;
   color: white;
-  border-color: #ff9800;
+  border-color: #76584C;
 }
 
 .btn-shuffle:hover:not(:disabled) {
-  background: #f57c00;
+  background: #5d4439;
 }
 
 .btn-shuffle:disabled {
@@ -321,13 +341,13 @@ const progress = computed(() => pouchStore.getProgress());
 }
 
 .btn-export {
-  background: #9c27b0;
+  background: #102E19;
   color: white;
-  border-color: #9c27b0;
+  border-color: #102E19;
 }
 
 .btn-export:hover:not(:disabled) {
-  background: #7b1fa2;
+  background: #1a4525;
 }
 
 .btn-export:disabled {
@@ -336,13 +356,13 @@ const progress = computed(() => pouchStore.getProgress());
 }
 
 .btn-primary {
-  background: #4caf50;
+  background: #102E19;
   color: white;
-  border-color: #4caf50;
+  border-color: #102E19;
 }
 
 .btn-primary:hover {
-  background: #388e3c;
+  background: #1a4525;
 }
 
 /* Modal Overlay */
@@ -361,34 +381,37 @@ const progress = computed(() => pouchStore.getProgress());
 }
 
 .modal-content {
-  background: white;
+  background: var(--background);
   padding: 2rem;
   border-radius: 12px;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
   max-width: 500px;
   width: 90%;
   animation: slideUp 0.3s ease-out;
+  border: 3px solid var(--border);
 }
 
 .modal-content h2 {
   margin: 0 0 1rem 0;
-  color: #213547;
+  color: var(--text);
   font-size: 1.5rem;
+  font-weight: 800;
 }
 
 .modal-content p {
   margin: 1rem 0;
-  color: #666;
+  color: var(--text);
   line-height: 1.6;
+  font-weight: 500;
 }
 
 .modal-content .warning {
-  color: #ff9800;
+  color: #A60B08;
   font-weight: 600;
-  background: #fff3e0;
+  background: #fee;
   padding: 0.75rem;
   border-radius: 6px;
-  border-left: 4px solid #ff9800;
+  border-left: 4px solid #A60B08;
 }
 
 .modal-actions {
@@ -423,40 +446,45 @@ const progress = computed(() => pouchStore.getProgress());
 }
 
 .calendar-info {
-  background: white;
+  background: var(--surface);
   padding: 2rem;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   margin-bottom: 2rem;
+  border: 2px solid var(--border);
 }
 
 .calendar-info h1 {
   margin: 0 0 1rem 0;
-  color: #213547;
+  color: #A60B08;
+  font-weight: 800;
 }
 
 .description {
-  color: #666;
+  color: var(--text-secondary);
   margin-bottom: 2rem;
   font-size: 1.05rem;
   line-height: 1.6;
+  font-weight: 500;
 }
 
 .info-box {
   padding-top: 1.5rem;
-  border-top: 1px solid #e0e0e0;
+  border-top: 2px solid var(--border);
 }
 
 .info-box p {
   margin: 0.5rem 0;
-  color: #666;
+  color: var(--text);
+  font-weight: 600;
 }
 
 .pouches-section {
-  background: white;
+  background: var(--surface);
   padding: 2rem;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  border: 2px solid var(--border);
 }
 
 @media (max-width: 768px) {

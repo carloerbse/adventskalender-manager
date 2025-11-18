@@ -16,7 +16,7 @@ import RegisterForm from '../components/auth/RegisterForm.vue'
 <style scoped>
 .register-view {
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #102E19 0%, #A60B08 100%);
   padding: 2rem;
   display: flex;
   flex-direction: column;
@@ -33,12 +33,16 @@ import RegisterForm from '../components/auth/RegisterForm.vue'
 .hero-section h1 {
   font-size: 2.5rem;
   margin-bottom: 0.5rem;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  color: white;
+  font-weight: 800;
 }
 
 .hero-section p {
   font-size: 1.1rem;
-  opacity: 0.9;
+  opacity: 0.95;
+  color: #CFCABF;
+  font-weight: 600;
 }
 
 @media (max-width: 600px) {

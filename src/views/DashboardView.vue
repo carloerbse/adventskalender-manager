@@ -44,22 +44,23 @@ async function handleLogout() {
 <style scoped>
 .dashboard {
   min-height: 100vh;
-  background: #f5f5f5;
+  background: var(--background);
 }
 
 .dashboard-header {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #A60B08 0%, #102E19 100%);
   color: white;
   padding: 1.5rem 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
 
 .dashboard-header h1 {
   margin: 0;
   font-size: 1.8rem;
+  color: white;
 }
 
 .user-info {
@@ -74,9 +75,9 @@ async function handleLogout() {
 
 .btn-admin {
   padding: 0.5rem 1rem;
-  background: rgba(255, 193, 7, 0.2);
-  border: 2px solid #ffc107;
-  color: #ffc107;
+  background: rgba(207, 202, 191, 0.2);
+  border: 2px solid #CFCABF;
+  color: #CFCABF;
   border-radius: 4px;
   text-decoration: none;
   font-weight: 600;
@@ -87,7 +88,7 @@ async function handleLogout() {
 }
 
 .btn-admin:hover {
-  background: rgba(255, 193, 7, 0.3);
+  background: rgba(207, 202, 191, 0.3);
   transform: translateY(-1px);
 }
 
@@ -99,11 +100,12 @@ async function handleLogout() {
   border-radius: 4px;
   cursor: pointer;
   font-weight: 600;
-  transition: background 0.3s;
+  transition: all 0.3s;
 }
 
 .btn-logout:hover {
   background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
 }
 
 .dashboard-content {
@@ -115,16 +117,23 @@ async function handleLogout() {
 .welcome-section {
   text-align: center;
   margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: var(--surface);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border: 2px solid var(--border);
 }
 
 .welcome-section h2 {
-  color: #213547;
+  color: #A60B08;
   margin-bottom: 0.5rem;
+  font-weight: 800;
 }
 
 .welcome-section p {
-  color: #666;
+  color: var(--text);
   font-size: 1.05rem;
+  font-weight: 500;
 }
 
 @media (max-width: 768px) {
